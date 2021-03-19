@@ -3,6 +3,8 @@ extends Node
 # TODO put back in extrapolation
 # TODO More sophisticated way of adding/removing players
 
+const Bot = preload("res://scenes/Bot.tscn")
+
 func push_players_update(timestamp : int, other_player_info : Dictionary):
 	var compiled_player_info = {}
 	for pid in other_player_info.keys():
@@ -104,8 +106,8 @@ func update_players(new_state):
 				get_node(str(pid)).transform = new_state[pid]["transform"]
 			if new_state[pid].has("head_angle"):
 				get_node(str(pid)).head_angle = new_state[pid]["head_angle"]
-#		else:
-#			var bot = Bot.instance()
-#			bot.set_name(str(pid))
-#			bot.transform = new_state[pid]["transform"]
-#			add_child(bot, true)
+		else:
+			var bot = Bot.instance()
+			bot.set_name(str(pid))
+			bot.transform = new_state[pid]["transform"]
+			add_child(bot, true)
