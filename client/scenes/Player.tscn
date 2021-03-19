@@ -16,6 +16,7 @@ shape = SubResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0 )
+fov = 90.0
 
 [node name="RayCast" type="RayCast" parent="."]
 enabled = true

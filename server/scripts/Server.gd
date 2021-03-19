@@ -12,6 +12,9 @@ func _ready():
 	
 	StartServer()
 	
+func _unhandled_input(event):
+	if Input.is_action_just_pressed("ui_cancel"):
+		get_tree().quit()
 	
 func _physics_process(delta):
 	# deep copy to capture buffer at this moment in time

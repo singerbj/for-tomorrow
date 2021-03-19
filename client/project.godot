@@ -25,10 +25,6 @@ Server="*res://scripts/Server.gd"
 ClientData="*res://scripts/ClientData.gd"
 Utility="*res://scripts/Utility.gd"
 
-[display]
-
-window/vsync/use_vsync=false
-
 [input]
 
 exit={
@@ -94,4 +90,5 @@ change_mouse_mode={
 
 [rendering]
 
+quality/filters/msaa=2
 environment/default_environment="res://default_env.tres"
