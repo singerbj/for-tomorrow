@@ -19,4 +19,4 @@ var max_extrapolation_time_ms : float = 500 # 500ms
 var start_time
 
 const EPSILON = 1e-3
-const SENS_MULTIPLIER = 0.3
+const SENS_MULTIPLIER = 0.05
