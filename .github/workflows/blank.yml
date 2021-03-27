@@ -34,8 +34,8 @@ jobs:
             - name: Upload Artifact
                 uses: actions/upload-artifact@v1
                 with:
-                name: linux
-                path: ./build/linux/
+                    name: linux
+                    path: ./build/linux/
 
     export-windows:
         name: Windows Export
