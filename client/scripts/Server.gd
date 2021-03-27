@@ -1,13 +1,22 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-# var ip = "25.92.151.203"
-# var ip = "192.168.178.35"
 var ip = "127.0.0.1"
 var port = 29995
 
 func _ready():
 	print("Client started")
+	
+	var args = Array(OS.get_cmdline_args())
+	for arg in args:
+		var formatted_arg_array = arg.replace("-", "").split("=")
+		print(formatted_arg_array)
+		if formatted_arg_array.size() == 2 && formatted_arg_array[0] == "ip":
+			ip = formatted_arg_array[1]
+			print("Using command line specified ip: " + ip)
+		else:
+			print("Using default ip: " + ip)
+			
 	ConnectToServer()
 	
 
