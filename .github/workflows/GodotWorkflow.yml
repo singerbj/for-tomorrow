@@ -128,7 +128,7 @@ jobs:
                 username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
                 key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
                 port: ${{ secrets.DIGITAL_OCEAN_PORT }}
-                source: "./server/build/linux/"
+                source: "$EXPORT_NAME-server.x86_64"
                 target: "/root/"
             - name: Deploy to Digital Ocean VM
               uses: appleboy/ssh-action@master
