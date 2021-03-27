@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-./stop_test.sh
+./stop_all.sh
 
 logs_folder=`pwd`/logs
 mkdir -p $logs_folder
