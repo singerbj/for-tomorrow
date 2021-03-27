@@ -47,6 +47,16 @@ jobs:
               with:
                     name: linux-server
                     path: ./server/build/linux/
+            - name: Deploy to Digital Ocean VM
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.DIGITAL_OCEAN_IP }}
+                username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
+                key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
+                port: ${{ secrets.PORT }}
+                script: |
+                  whoami
+                  ipconfig
 
     export-windows:
         name: Windows Export
