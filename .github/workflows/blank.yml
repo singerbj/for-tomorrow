@@ -37,10 +37,15 @@ jobs:
               run: |
                     godot -v --path ./client --export "Linux/X11" ./build/linux/$EXPORT_NAME-client.x86_64
                     godot -v --path ./server --export "Linux/X11" ./build/linux/$EXPORT_NAME-server.x86_64
+            - name: Upload Client Artifact
+              uses: actions/upload-artifact@v1
+              with:
+                    name: linux-client 
+                    path: ./client/build/linux/
             - name: Upload Server Artifact
               uses: actions/upload-artifact@v1
               with:
-                    name: linux
+                    name: linux-server
                     path: ./server/build/linux/
 
     export-windows:
@@ -61,21 +66,22 @@ jobs:
               run: |
                     godot -v --path ./client --export "Windows Desktop" ./build/windows/$EXPORT_NAME-client.exe
                     godot -v --path ./server --export "Windows Desktop" ./build/windows/$EXPORT_NAME-server.exe
-            - name: Upload Server Artifact
-              uses: actions/upload-artifact@v1
-              with:
-                    name: windows
-                    path: ./server/build/windows/
             - name: Upload Client Artifact
               uses: actions/upload-artifact@v1
               with:
-                    name: windows
+                    name: windows-client
                     path: ./client/build/windows/
+            - name: Upload Server Artifact
+              uses: actions/upload-artifact@v1
+              with:
+                    name: windows-server
+                    path: ./server/build/windows/
+            
     export-mac:
         name: Mac Export
         runs-on: ubuntu-latest
         container:
-            image: docker://barichello/godot-ci:3.2.1
+            image: docker://barichello/godot-ci:3.2.2
         steps:
             - name: Checkout
               uses: actions/checkout@v1
@@ -89,10 +95,15 @@ jobs:
               run: |
                     godot -v --path ./client --export "Mac OSX" ./build/mac/$EXPORT_NAME-client.exe
                     godot -v --path ./server --export "Mac OSX" ./build/mac/$EXPORT_NAME-server.exe
-            - name: Upload Artifact
+            - name: Upload Client Artifact
               uses: actions/upload-artifact@v1
               with:
-                name: mac
-                path: ./build/mac/
+                    name: mac-client
+                    path: ./client/build/mac/
+            - name: Upload Server Artifact
+              uses: actions/upload-artifact@v1
+              with:
+                    name: mac-server
+                    path: ./server/build/mac/
 
 
