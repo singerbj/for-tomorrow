@@ -9,9 +9,9 @@ func _ready():
 	
 	var args = Array(OS.get_cmdline_args())
 	for arg in args:
-		var formatted_arg_array = arg.replace("-", "").split("=")
+		var formatted_arg_array = arg.split("=")
 		print(formatted_arg_array)
-		if formatted_arg_array.size() == 2 && formatted_arg_array[0] == "ip":
+		if formatted_arg_array.size() == 2 && formatted_arg_array[0] == "-ip":
 			ip = formatted_arg_array[1]
 			print("Using command line specified ip: " + ip)
 		else:
