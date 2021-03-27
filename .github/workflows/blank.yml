@@ -28,9 +28,7 @@ jobs:
                     mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/templates
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Linux Build
-              run: |
-                    cd server
-                    godot -v --export "Linux/X11" ./build/linux/$EXPORT_NAME-server.x86_64
+              run: godot -v --path ./server --export "Linux/X11" ./build/linux/$EXPORT_NAME-server.x86_64
             - name: Upload Artifact
               uses: actions/upload-artifact@v1
               with:
@@ -51,10 +49,8 @@ jobs:
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Windows Build
               run: |
-                    cd client
-                    godot -v --export "Windows Desktop" ./build/windows/$EXPORT_NAME-client.exe
-                    cd ../server
-                    godot -v --export "Windows Desktop" ./build/windows/$EXPORT_NAME-server.exe
+                    godot -v --path ./client --export "Windows Desktop" ./build/windows/$EXPORT_NAME-client.exe
+                    godot -v --path ./server --export "Windows Desktop" ./build/windows/$EXPORT_NAME-server.exe
             - name: Upload Artifact
               uses: actions/upload-artifact@v1
               with:
@@ -74,9 +70,7 @@ jobs:
                     mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/templates
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Mac Build
-              run: |
-                    cd client
-                    godot -v --export "Mac OSX" ./build/mac/$EXPORT_NAME-client.zip
+              run: godot -v --path ./client --export "Mac OSX" ./build/mac/$EXPORT_NAME-client.zip
             - name: Upload Artifact
               uses: actions/upload-artifact@v1
               with:
