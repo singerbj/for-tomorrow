@@ -106,11 +106,17 @@ jobs:
               with:
                     name: mac-server
                     path: ./server/build/mac/
+
     deploy-to-digital-ocean:
         name: Deploy To Digital Ocean
         runs-on: ubuntu-latest
         needs: export-linux
         steps:
+            - name: Check directories
+              run: |
+                pwd
+                ls -al
+                tree
             - name: Copy Server Executable to Digital Ocean VM
               uses: appleboy/scp-action@master
               with:
