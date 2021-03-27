@@ -116,8 +116,7 @@ jobs:
               with:
                 host: ${{ secrets.DIGITAL_OCEAN_IP }}
                 username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
-                password: ${{ secrets.DIGITAL_OCEAN_PASSWORD }}
-                port: 22
+                key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
                 script: |
                   whoami
                   ipconfig
