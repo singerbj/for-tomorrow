@@ -111,6 +111,15 @@ jobs:
         runs-on: ubuntu-latest
         needs: export-linux
         steps:
+            - name: Copy Server Executable to Digital Ocean VM
+              uses: appleboy/scp-action@master
+              with:
+                host: ${{ secrets.DIGITAL_OCEAN_IP }}
+                username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
+                key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
+                port: ${{ secrets.DIGITAL_OCEAN_PORT }}
+                source: "./server/build/linux/"
+                target: "/root/"
             - name: Deploy to Digital Ocean VM
               uses: appleboy/ssh-action@master
               with:
@@ -119,7 +128,8 @@ jobs:
                 key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
                 port: ${{ secrets.DIGITAL_OCEAN_PORT }}
                 script: |
-                  whoami
-                  ipconfig
+                  pwd
+                  ls /root/
+                  
 
 
