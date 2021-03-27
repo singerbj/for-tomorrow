@@ -25,10 +25,12 @@ jobs:
               uses: actions/checkout@v1
             - name: Setup
               run: |
-                    mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/templates
+                    mkdir -v -p ./server/build/linux ./server/build/windows ./server/build/mac ./server/build/web
+                    mkdir -v -p ./client/build/linux ./client/build/windows ./client/build/mac ./client/build/web
+                    mkdir -v -p ~/.local/share/godot/templates
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Linux Build
-              run: godot -v --path ./server --export "Linux/X11" ./build/linux/$EXPORT_NAME-server.x86_64
+              run: godot -v --path ./server --export "Linux/X11" ./server/build/linux/$EXPORT_NAME-server.x86_64
             - name: Upload Artifact
               uses: actions/upload-artifact@v1
               with:
@@ -45,12 +47,14 @@ jobs:
               uses: actions/checkout@v1
             - name: Setup
               run: |
-                    mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/templates
+                    mkdir -v -p ./server/build/linux ./server/build/windows ./server/build/mac ./server/build/web
+                    mkdir -v -p ./client/build/linux ./client/build/windows ./client/build/mac ./client/build/web
+                    mkdir -v -p ~/.local/share/godot/templates
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Windows Build
               run: |
-                    godot -v --path ./client --export "Windows Desktop" ./build/windows/$EXPORT_NAME-client.exe
-                    godot -v --path ./server --export "Windows Desktop" ./build/windows/$EXPORT_NAME-server.exe
+                    godot -v --path ./client --export "Windows Desktop" ./client/build/windows/$EXPORT_NAME-client.exe
+                    godot -v --path ./server --export "Windows Desktop" ./server/build/windows/$EXPORT_NAME-server.exe
             - name: Upload Artifact
               uses: actions/upload-artifact@v1
               with:
