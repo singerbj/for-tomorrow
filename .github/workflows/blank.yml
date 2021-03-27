@@ -35,11 +35,11 @@ jobs:
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Linux Build
               run: godot -v --path ./server --export "Linux/X11" ./build/linux/$EXPORT_NAME-server.x86_64
-            - name: Upload Artifact
+            - name: Upload Server Artifact
               uses: actions/upload-artifact@v1
               with:
                     name: linux
-                    path: ./build/linux/
+                    path: ./server/build/linux/
 
     export-windows:
         name: Windows Export
@@ -59,9 +59,14 @@ jobs:
               run: |
                     godot -v --path ./client --export "Windows Desktop" ./build/windows/$EXPORT_NAME-client.exe
                     godot -v --path ./server --export "Windows Desktop" ./build/windows/$EXPORT_NAME-server.exe
-            - name: Upload Artifact
+            - name: Upload Server Artifact
               uses: actions/upload-artifact@v1
               with:
                     name: windows
-                    path: ./build/windows/
+                    path: ./server/build/windows/
+            - name: Upload Client Artifact
+              uses: actions/upload-artifact@v1
+              with:
+                    name: windows
+                    path: ./client/build/windows/
 
