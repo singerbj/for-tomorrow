@@ -41,12 +41,12 @@ jobs:
               uses: actions/upload-artifact@v1
               with:
                     name: linux-client 
-                    path: ./client/build/linux/$EXPORT_NAME-client.x86_64
+                    path: ./client/build/linux/
             - name: Upload Server Artifact
               uses: actions/upload-artifact@v1
               with:
                     name: linux-server
-                    path: ./server/build/linux/$EXPORT_NAME-server.x86_64
+                    path: ./server/build/linux/
 
     export-windows:
         name: Windows Export
@@ -70,12 +70,12 @@ jobs:
               uses: actions/upload-artifact@v1
               with:
                     name: windows-client
-                    path: ./client/build/windows/$EXPORT_NAME-client.exe
+                    path: ./client/build/windows/
             - name: Upload Server Artifact
               uses: actions/upload-artifact@v1
               with:
                     name: windows-server
-                    path: ./server/build/windows/$EXPORT_NAME-server.exe
+                    path: ./server/build/windows/
             
     export-mac:
         name: Mac Export
@@ -99,11 +99,11 @@ jobs:
               uses: actions/upload-artifact@v1
               with:
                     name: mac-client
-                    path: ./client/build/mac/$EXPORT_NAME-client.zip
+                    path: ./client/build/mac/
             - name: Upload Server Artifact
               uses: actions/upload-artifact@v1
               with:
                     name: mac-server
-                    path: ./server/build/mac/EXPORT_NAME-server.zip
+                    path: ./server/build/mac/
 
 
