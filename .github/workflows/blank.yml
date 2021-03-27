@@ -34,7 +34,9 @@ jobs:
                     mkdir -v -p ~/.local/share/godot/templates
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Linux Build
-              run: godot -v --path ./server --export "Linux/X11" ./build/linux/$EXPORT_NAME-server.x86_64
+              run: |
+                    godot -v --path ./client --export "Linux/X11" ./build/linux/$EXPORT_NAME-client.x86_64
+                    godot -v --path ./server --export "Linux/X11" ./build/linux/$EXPORT_NAME-server.x86_64
             - name: Upload Server Artifact
               uses: actions/upload-artifact@v1
               with:
@@ -69,4 +71,28 @@ jobs:
               with:
                     name: windows
                     path: ./client/build/windows/
+    export-mac:
+        name: Mac Export
+        runs-on: ubuntu-latest
+        container:
+            image: docker://barichello/godot-ci:3.2.1
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v1
+            - name: Setup
+              run: |
+                    mkdir -v -p ./server/build/linux ./server/build/windows ./server/build/mac ./server/build/web
+                    mkdir -v -p ./client/build/linux ./client/build/windows ./client/build/mac ./client/build/web
+                    mkdir -v -p ~/.local/share/godot/templates
+                    mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
+            - name: Mac Build
+              run: |
+                    godot -v --path ./client --export "Mac OSX" ./build/mac/$EXPORT_NAME-client.exe
+                    godot -v --path ./server --export "Mac OSX" ./build/mac/$EXPORT_NAME-server.exe
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v1
+              with:
+                name: mac
+                path: ./build/mac/
+
 
