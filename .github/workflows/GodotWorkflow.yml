@@ -24,7 +24,7 @@ jobs:
         runs-on: ubuntu-latest
         container:
             image: docker://barichello/godot-ci:3.2.2
-            options: -v ~/.ssh:/home/user/.ssh:rw
+            options: -v /home/runner/.ssh:/home/user/.ssh:rw
         steps:
             - name: Checkout
               uses: actions/checkout@v1
