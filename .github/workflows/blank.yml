@@ -30,7 +30,7 @@ jobs:
             - name: Linux Build
               run: |
                     cd server
-                    godot -v --export "Linux/X11" ./build/linux/$EXPORT_NAME.x86_64
+                    godot -v --export "Linux/X11" ./build/linux/$EXPORT_NAME-server.x86_64
             - name: Upload Artifact
               uses: actions/upload-artifact@v1
               with:
@@ -52,9 +52,9 @@ jobs:
             - name: Windows Build
               run: |
                     cd client
-                    godot -v --export "Windows Desktop Client" ./build/windows/$EXPORT_NAME-client.exe
+                    godot -v --export "Windows Desktop" ./build/windows/$EXPORT_NAME-client.exe
                     cd ../server
-                    godot -v --export "Windows Desktop Server" ./build/windows/$EXPORT_NAME-server.exe
+                    godot -v --export "Windows Desktop" ./build/windows/$EXPORT_NAME-server.exe
             - name: Upload Artifact
               uses: actions/upload-artifact@v1
               with:
@@ -76,7 +76,7 @@ jobs:
             - name: Mac Build
               run: |
                     cd client
-                    godot -v --export "Mac OSX" ./build/mac/$EXPORT_NAME.zip
+                    godot -v --export "Mac OSX" ./build/mac/$EXPORT_NAME-client.zip
             - name: Upload Artifact
               uses: actions/upload-artifact@v1
               with:
