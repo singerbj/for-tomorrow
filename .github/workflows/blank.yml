@@ -22,18 +22,18 @@ jobs:
             image: docker://barichello/godot-ci:3.2.1
         steps:
             - name: Checkout
-                uses: actions/checkout@v1
+              uses: actions/checkout@v1
             - name: Setup
-                run: |
+              run: |
                     mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/templates
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Linux Build
-                run: |
+              run: |
                     cd server
                     godot -v --export "Linux/X11" ./build/linux/$EXPORT_NAME.x86_64
             - name: Upload Artifact
-                uses: actions/upload-artifact@v1
-                with:
+              uses: actions/upload-artifact@v1
+              with:
                     name: linux
                     path: ./build/linux/
 
@@ -44,20 +44,20 @@ jobs:
             image: docker://barichello/godot-ci:3.2.1
         steps:
             - name: Checkout
-                uses: actions/checkout@v1
+              uses: actions/checkout@v1
             - name: Setup
-                run: |
+              run: |
                     mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/templates
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Windows Build
-                run: |
+              run: |
                     cd client
                     godot -v --export "Windows Desktop Client" ./build/windows/$EXPORT_NAME-client.exe
                     cd ../server
                     godot -v --export "Windows Desktop Server" ./build/windows/$EXPORT_NAME-server.exe
             - name: Upload Artifact
-                uses: actions/upload-artifact@v1
-                with:
+              uses: actions/upload-artifact@v1
+              with:
                     name: windows
                     path: ./build/windows/
 
@@ -65,21 +65,21 @@ jobs:
         name: Mac Export
         runs-on: ubuntu-latest
         container:
-        image: docker://barichello/godot-ci:3.2.1
+            image: docker://barichello/godot-ci:3.2.1
         steps:
             - name: Checkout
-                uses: actions/checkout@v1
+              uses: actions/checkout@v1
             - name: Setup
-                run: |
+              run: |
                     mkdir -v -p build/linux build/windows build/mac build/web ~/.local/share/godot/templates
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Mac Build
-                run: |
+              run: |
                     cd client
                     godot -v --export "Mac OSX" ./build/mac/$EXPORT_NAME.zip
             - name: Upload Artifact
-                uses: actions/upload-artifact@v1
-                with:
+              uses: actions/upload-artifact@v1
+              with:
                     name: mac
                     path: ./build/mac/
 
