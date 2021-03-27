@@ -24,7 +24,7 @@ jobs:
         runs-on: ubuntu-latest
         container:
             image: docker://barichello/godot-ci:3.2.2
-            options: -v /home/runner/.ssh:/home/user/.ssh:rw
+            options: -v /home/runner/.ssh:/home/user/.ssh:rw # probs delete this and just do password auth or something####################################################
         steps:
             - name: Checkout
               uses: actions/checkout@v1
@@ -53,7 +53,7 @@ jobs:
               with:
                 host: ${{ secrets.DIGITAL_OCEAN_IP }}
                 username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
-                key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
+                password: ${{ secrets.DIGITAL_OCEAN_PASSWORD }}
                 script: |
                   whoami
                   ipconfig
