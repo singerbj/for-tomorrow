@@ -115,6 +115,7 @@ jobs:
               uses: appleboy/ssh-action@master
               with:
                 host: ${{ secrets.DIGITAL_OCEAN_IP }}
+                port: 22
                 username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
                 key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
                 script: |
