@@ -128,7 +128,7 @@ jobs:
                 username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
                 key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
                 port: ${{ secrets.DIGITAL_OCEAN_PORT }}
-                source: "for-tomorrow-server.x86_64,for-tomorrow-server.x86_64.pck"
+                source: "for-tomorrow-server.x86_64,for-tomorrow-server.pck"
                 target: "/root/"
             - name: Deploy to Digital Ocean VM
               uses: appleboy/ssh-action@master
@@ -138,7 +138,7 @@ jobs:
                 key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
                 port: ${{ secrets.DIGITAL_OCEAN_PORT }}
                 script: |
-                  godot --main-pack for-tomorrow-server.x86_64.pck &
+                  godot --main-pack /root/for-tomorrow-server.x86_64.pck &
                   
 
 
