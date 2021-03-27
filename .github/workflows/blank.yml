@@ -41,12 +41,12 @@ jobs:
               uses: actions/upload-artifact@v1
               with:
                     name: linux-client 
-                    path: ./client/build/linux/
+                    path: ./client/build/linux/$EXPORT_NAME-client.x86_64
             - name: Upload Server Artifact
               uses: actions/upload-artifact@v1
               with:
                     name: linux-server
-                    path: ./server/build/linux/
+                    path: ./server/build/linux/$EXPORT_NAME-server.x86_64
 
     export-windows:
         name: Windows Export
@@ -70,12 +70,12 @@ jobs:
               uses: actions/upload-artifact@v1
               with:
                     name: windows-client
-                    path: ./client/build/windows/
+                    path: ./client/build/windows/$EXPORT_NAME-client.exe
             - name: Upload Server Artifact
               uses: actions/upload-artifact@v1
               with:
                     name: windows-server
-                    path: ./server/build/windows/
+                    path: ./server/build/windows/$EXPORT_NAME-server.exe
             
     export-mac:
         name: Mac Export
@@ -93,17 +93,17 @@ jobs:
                     mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Mac Build
               run: |
-                    godot -v --path ./client --export "Mac OSX" ./build/mac/$EXPORT_NAME-client.exe
-                    godot -v --path ./server --export "Mac OSX" ./build/mac/$EXPORT_NAME-server.exe
+                    godot -v --path ./client --export "Mac OSX" ./build/mac/$EXPORT_NAME-client.zip
+                    godot -v --path ./server --export "Mac OSX" ./build/mac/$EXPORT_NAME-server.zip
             - name: Upload Client Artifact
               uses: actions/upload-artifact@v1
               with:
                     name: mac-client
-                    path: ./client/build/mac/
+                    path: ./client/build/mac/$EXPORT_NAME-client.zip
             - name: Upload Server Artifact
               uses: actions/upload-artifact@v1
               with:
                     name: mac-server
-                    path: ./server/build/mac/
+                    path: ./server/build/mac/EXPORT_NAME-server.zip
 
 
