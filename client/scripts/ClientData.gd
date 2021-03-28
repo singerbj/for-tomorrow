@@ -20,3 +20,5 @@ var start_time
 
 const EPSILON = 1e-3
 const SENS_MULTIPLIER = 0.05
+
+var connected = false

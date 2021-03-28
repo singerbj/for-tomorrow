@@ -1,6 +1,6 @@
 extends Node
 
-var port = 29995
+var port = 1337
 var max_players = 100
 var count = 0
 

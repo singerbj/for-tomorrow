@@ -2,7 +2,7 @@ extends Node
 
 var network = NetworkedMultiplayerENet.new()
 var ip = "127.0.0.1"
-var port = 29995
+var port = 1337
 
 func _ready():
 	print("Client started")
@@ -21,18 +21,22 @@ func _ready():
 	
 
 func ConnectToServer():
+	print("Connecting to server...")
+	
+	get_tree().connect("connection_failed", self, "_on_connection_failed")
+	get_tree().connect("connected_to_server", self, "_on_connection_succeeded")
+	
 	network.create_client(ip, port)
 	get_tree().set_network_peer(network)
 	
-	network.connect("connection_failed", self, "_on_connection_failed")
-	network.connect("connection_succeeded", self, "_on_connection_succeeded")
-	
 	
 func _on_connection_failed():
+	ClientData.connected = false
 	print("Failed to connect")
 	
 	
 func _on_connection_succeeded():
+	ClientData.connected = true
 	print("Connected Successfully")
 	
 
@@ -49,8 +53,8 @@ remote func world_update(world):
 	
 	
 func report_input(input_id : int, input : Dictionary) -> void:
-	rpc_id(1, "report_client_input", input_id, input)
-	
+	if ClientData.connected:
+		rpc_id(1, "report_client_input", input_id, input)
 
 # Obsolete
 remote func report_tick_update(update : Dictionary):
