@@ -56,6 +56,17 @@ func _process(delta):
 
 func StartServer():
 	network.create_server(ServerData.port, ServerData.max_players)
+	var args = Array(OS.get_cmdline_args())
+	for arg in args:
+		var formatted_arg_array = arg.split("=")
+		print(formatted_arg_array)
+		if formatted_arg_array.size() == 2 && formatted_arg_array[0] == "-bind-ip":
+			var bind_ip = formatted_arg_array[1]
+			network.set_bind_ip(bind_ip)
+			print("Using command line specified bind ip: " + bind_ip)
+		else:
+			print("Using default bind ip: *")
+		
 	get_tree().set_network_peer(network)
 	print("Server started")
 	

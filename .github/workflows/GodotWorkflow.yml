@@ -138,7 +138,7 @@ jobs:
                 key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
                 port: ${{ secrets.DIGITAL_OCEAN_PORT }}
                 script: |
-                  godot --main-pack /root/for-tomorrow-server.pck &
+                  dont run yetgodot --main-pack /root/for-tomorrow-server.pck -bind-ip=178.128.133.24 &
                   
 
 
