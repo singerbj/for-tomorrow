@@ -2,6 +2,9 @@
 
 pid_file=".godot_pids"
 
+logs_folder=`pwd`/logs
+rm -rf $logs_folder
+
 if test -f "$pid_file"; then
     while IFS= read -r line
     do
