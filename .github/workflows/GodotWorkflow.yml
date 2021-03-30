@@ -121,6 +121,15 @@ jobs:
                 pwd
                 ls -al
                 tree
+            - name: Stop Current Server on Digital Ocean VM
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.DIGITAL_OCEAN_IP }}
+                username: ${{ secrets.DIGITAL_OCEAN_USERNAME }}
+                key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
+                port: ${{ secrets.DIGITAL_OCEAN_PORT }}
+                script: |
+                  sudo systemctl stop for-tomorrow
             - name: Copy Server Executable to Digital Ocean VM
               uses: appleboy/scp-action@master
               with:
@@ -138,8 +147,7 @@ jobs:
                 key: ${{ secrets.DIGITAL_OCEAN_SSH_KEY }}
                 port: ${{ secrets.DIGITAL_OCEAN_PORT }}
                 script: |
-                  pkill godot
-                  godot --main-pack /root/for-tomorrow-server.pck &
+                  sudo systemctl start for-tomorrow
                   
 
 
