@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/Menu.gd" type="Script" id=1]
+
+[node name="Panel" type="Panel"]
+margin_right = 1024.0
+margin_bottom = 600.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextEdit2" type="TextEdit" parent="."]
+margin_left = 362.584
+margin_top = 330.0
+margin_right = 662.584
+margin_bottom = 370.0
+hint_tooltip = "Name"
+text = "Player"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextEdit" type="TextEdit" parent="."]
+margin_left = 362.584
+margin_top = 260.0
+margin_right = 662.584
+margin_bottom = 300.0
+hint_tooltip = "Server IP Address"
+text = "127.0.0.1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="."]
+margin_left = 362.584
+margin_top = 390.0
+margin_right = 662.584
+margin_bottom = 430.0
+text = "Join Game"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_left = 362.584
+margin_top = 242.0
+margin_right = 541.584
+margin_bottom = 259.0
+rect_pivot_offset = Vector2( 178.101, -58.249 )
+text = "Server IP Address"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+margin_left = 362.584
+margin_top = 314.0
+margin_right = 671.584
+margin_bottom = 338.0
+text = "Player Name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+margin_left = 412.0
+margin_top = 141.0
+margin_right = 616.0
+margin_bottom = 228.0
+text = "ALL YOU CAN DO IS MOVE .EXE"
+__meta__ = {
+"_edit_use_anchors_": false
+}

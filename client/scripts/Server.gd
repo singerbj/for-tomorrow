@@ -1,32 +1,56 @@
 extends Node
 
 var network = NetworkedMultiplayerENet.new()
-var ip = "127.0.0.1"
 var port = 6969
+var menu_instance = null
+
+const Menu = preload("res://scenes/Menu.tscn")
 
 func _ready():
 	print("Client started")
+	var ip_address = null
+	var player_name = null
 	
 	var args = Array(OS.get_cmdline_args())
 	for arg in args:
 		var formatted_arg_array = arg.split("=")
 		print(formatted_arg_array)
-		if formatted_arg_array.size() == 2 && formatted_arg_array[0] == "-ip":
-			ip = formatted_arg_array[1]
-			print("Using command line specified ip: " + ip)
-		else:
-			print("Using default ip: " + ip)
-			
-	ConnectToServer()
+		if formatted_arg_array.size() == 2:
+			if formatted_arg_array[0] == "-ip":
+				ip_address = formatted_arg_array[1]
+				print("Using command line specified ip: " + ip_address)
+			else:
+				print("Command line ip not specified")
+			if formatted_arg_array[0] == "-name":
+				player_name = formatted_arg_array[1]
+				print("Using command line specified name: " + player_name)
+			else:
+				print("Command line name not specified")	
 	
+	if ip_address != null && player_name != null:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		ConnectToServer(ip_address, player_name)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		if menu_instance != null:
+			menu_instance.queue_free()
+		menu_instance = Menu.instance()
+		menu_instance.connect("join_signal", self, "_on_join_signal")
+		add_child(menu_instance)
+	
+func _on_join_signal(ip_address, player_name):
+	print("_on_join_signal")
+	ConnectToServer(ip_address, player_name)
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	menu_instance.queue_free()
 
-func ConnectToServer():
-	print("Connecting to server... (with ip: " + ip + ")")
+func ConnectToServer(ip_address, player_name):
+	print("Connecting to server... (with ip: " + ip_address + ")")
 	
 	get_tree().connect("connection_failed", self, "_on_connection_failed")
 	get_tree().connect("connected_to_server", self, "_on_connection_succeeded")
 
-	network.create_client(ip, port, 0, 0, port)
+	network.create_client(ip_address, port, 0, 0, port)
 	get_tree().set_network_peer(network)
 	
 	

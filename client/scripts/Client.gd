@@ -7,8 +7,6 @@ const Chat = preload("res://scenes/ChatContainer.tscn")
 var total_missing_packets : int = 0
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
 	ClientData.level = Level.instance()
 	ClientData.level.name = "Level"
 	add_child(ClientData.level)
