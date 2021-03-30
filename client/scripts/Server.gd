@@ -26,7 +26,7 @@ func ConnectToServer():
 	get_tree().connect("connection_failed", self, "_on_connection_failed")
 	get_tree().connect("connected_to_server", self, "_on_connection_succeeded")
 
-	network.create_client(ip, port)
+	network.create_client(ip, port, 0, 0, port)
 	get_tree().set_network_peer(network)
 	
 	
