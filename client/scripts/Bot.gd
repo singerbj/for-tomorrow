@@ -1,4 +1,4 @@
-extends Spatial
+extends KinematicBody
 
 var head_angle : float setget set_head_angle
 

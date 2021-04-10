@@ -50,7 +50,9 @@ func ConnectToServer(ip_address, player_name):
 	get_tree().connect("connection_failed", self, "_on_connection_failed")
 	get_tree().connect("connected_to_server", self, "_on_connection_succeeded")
 
-	network.create_client(ip_address, port, 0, 0, port)
+	
+	var err = network.create_client(ip_address, port, 0, 0)
+	print(err)
 	get_tree().set_network_peer(network)
 	
 	

@@ -8,23 +8,24 @@ const MAX_XZ_SPEED = 4
 const FRICTION_XZ = 10
 const FRICTION_Y = 1
 
-var weapon : String = "placer"
+var weapon : String = "gun"
 var mass : float = 1
 var velocity : Vector3 = Vector3(0, 0, 0)
 var head_angle : float
 
-var weapon_list := ["placer", "shovel"]
+var weapon_list := ["gun"]
 
 
 func _ready() -> void:
 	$CanvasLayer/Control/Label.text = weapon
-	
+
+func _process(delta):
+	$CanvasLayer/Control/Label2.set_text(str(Engine.get_frames_per_second()))
 	
 func set_up(connect_info : Dictionary):
 	# Called in server.confirm_connection
 	transform = Utility.transform_from_array(connect_info["transform"])
 	velocity = Utility.vec3_from_array(connect_info["velocity"])
-
 
 func rotate_player(rot : Vector2):
 	# Rotate body

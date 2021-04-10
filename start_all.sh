@@ -19,6 +19,6 @@ cd ../client
 for i in $(seq 1 $number_of_clients);
 do
     echo "Starting client $i"
-    godot > $logs_folder/client-$i.log $@ 2>&1 &
+    godot $@ > $logs_folder/client-$i.log 2>&1 &
     echo $! >> ../.godot_pids
 done

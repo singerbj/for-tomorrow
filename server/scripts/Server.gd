@@ -64,8 +64,6 @@ func StartServer():
 			var bind_ip = formatted_arg_array[1]
 			network.set_bind_ip(bind_ip)
 			print("Using command line specified bind ip: " + bind_ip)
-		else:
-			print("Using default bind ip: *")
 		
 	get_tree().set_network_peer(network)
 	print("Server started")

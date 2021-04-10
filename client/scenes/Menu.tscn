@@ -10,6 +10,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextEdit" type="TextEdit" parent="."]
+margin_left = 362.584
+margin_top = 260.0
+margin_right = 662.584
+margin_bottom = 300.0
+hint_tooltip = "Server IP Address"
+text = "157.230.0.57"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="TextEdit2" type="TextEdit" parent="."]
 margin_left = 362.584
 margin_top = 330.0
@@ -17,17 +28,6 @@ margin_right = 662.584
 margin_bottom = 370.0
 hint_tooltip = "Name"
 text = "Player"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextEdit" type="TextEdit" parent="."]
-margin_left = 362.584
-margin_top = 260.0
-margin_right = 662.584
-margin_bottom = 300.0
-hint_tooltip = "Server IP Address"
-text = "127.0.0.1"
 __meta__ = {
 "_edit_use_anchors_": false
 }

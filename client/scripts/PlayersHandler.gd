@@ -104,6 +104,8 @@ func update_players(new_state):
 		if get_node_or_null(str(pid)):
 			if new_state[pid].has("transform"):
 				get_node(str(pid)).transform = new_state[pid]["transform"]
+#				get_node(str(pid)).move_and_slide(new_state[pid]["transform"].origin)
+#				get_node(str(pid)).transform = get_node(str(pid)).transform.interpolate_with(new_state[pid]["transform"], 1)
 			if new_state[pid].has("head_angle"):
 				get_node(str(pid)).head_angle = new_state[pid]["head_angle"]
 		else:
