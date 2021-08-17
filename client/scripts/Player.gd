@@ -15,7 +15,6 @@ var head_angle : float
 
 var weapon_list := ["gun"]
 
-
 func _ready() -> void:
 	$CanvasLayer/Control/Label.text = weapon
 
@@ -77,9 +76,7 @@ func construct(block_id):
 		#c.set_cell_item(target.x, target.y, target.z, 0)
 	Server.construct(target, block_id)
 	
-	
-	
-	
+
 	
 	
 	

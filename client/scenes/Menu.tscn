@@ -16,7 +16,7 @@ margin_top = 260.0
 margin_right = 662.584
 margin_bottom = 300.0
 hint_tooltip = "Server IP Address"
-text = "157.230.0.57"
+text = "127.0.0.1"
 __meta__ = {
 "_edit_use_anchors_": false
 }
