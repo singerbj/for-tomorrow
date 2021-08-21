@@ -4,8 +4,6 @@ var network = NetworkedMultiplayerENet.new()
 var Player = preload("res://scenes/Player.tscn")
 var Level = preload("res://scenes/Level2.tscn")
 
-var time_since_last_frame = 0
-
 func _ready():
 	
 	var level = Level.instance()
@@ -32,13 +30,6 @@ func _physics_process(delta):
 
 
 func _process(delta):
-	# Made up server lag
-#	time_since_last_frame += delta
-#	if time_since_last_frame < 0.1:
-#		return
-#	else:
-#		time_since_last_frame = 0
-	
 	# The various process functions return information that will be passed
 	# back to the client
 	
