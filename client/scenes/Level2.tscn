@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://materials/grid.material" type="Material" id=1]
+[ext_resource path="res://scripts/Level2.gd" type="Script" id=2]
 
 [sub_resource type="CubeMesh" id=1]
 material = ExtResource( 1 )
@@ -10,6 +11,7 @@ size = Vector3( 200, 2, 200 )
 extents = Vector3( 50, 1, 50 )
 
 [node name="Level2" type="StaticBody"]
+script = ExtResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )

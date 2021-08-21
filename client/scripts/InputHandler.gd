@@ -17,6 +17,8 @@ func process_input(delta):
 		button_list.append("m_left")
 	if Input.is_action_pressed("m_right"):
 		button_list.append("m_right")
+	if Input.is_action_pressed("jump"):
+		button_list.append("jump")
 		
 	if Input.is_action_just_released("scroll_down"):
 		button_list.append("scroll_down")
@@ -45,6 +47,7 @@ func predict_input(input : Dictionary):
 	P.rotate_player(input["Motion"])
 	
 	var move_vector = Vector3(0, 0, 0)
+	var jump = false
 	for button in input["Buttons"]:
 		if button in ["m_forward", "m_backward", "m_left", "m_right"]:
 			if button == "m_forward":
@@ -55,9 +58,11 @@ func predict_input(input : Dictionary):
 				move_vector.x -= 1
 			if button == "m_right":
 				move_vector.x += 1
+		elif button == "jump":
+			jump = true
 				
 	move_vector = move_vector.normalized()
-	P.move(move_vector, input["delta"])
+	P.move(move_vector, input["delta"], jump)
 		
 	var input_data = {
 		"transform" : Utility.array_from_transform(P.transform),

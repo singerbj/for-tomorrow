@@ -25,6 +25,7 @@ func execute_client_input(P, input):
 	P.rotate_player(input["Motion"])
 	
 	var move_vector = Vector3(0, 0, 0)
+	var jump = false
 	for button in input["Buttons"]:
 		if button in ["m_forward", "m_backward", "m_left", "m_right"]:
 			if button == "m_forward":
@@ -35,10 +36,12 @@ func execute_client_input(P, input):
 				move_vector.x -= 1
 			if button == "m_right":
 				move_vector.x += 1
+		elif button == "jump":
+			jump = true
 				
 	move_vector = move_vector.normalized()
 	
-	P.move(move_vector, input["delta"])	
+	P.move(move_vector, input["delta"], jump)	
 
 
 

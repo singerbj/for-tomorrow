@@ -15,7 +15,7 @@ var weapon : String			# Currently equipped weapon
 var mass : float = 1		# kg
 var velocity : Vector3 = Vector3(0, 0, 0)
 var head_angle : float
-
+var can_jump
 
 func rotate_player(rot : Vector2):
 	# Rotate body
@@ -25,11 +25,14 @@ func rotate_player(rot : Vector2):
 	head_angle = clamp(head_angle, -80, 90)
 
 
-func move(dir : Vector3, delta : float):
+func move(dir : Vector3, delta : float, jump : bool):
 	dir = dir.x * transform.basis.x + dir.y * transform.basis.y + dir.z * transform.basis.z
 	
 	# dir.y should already be 0, but just to be sure...
-	dir.y = 0
+	# dir.y = 0
+	if jump && can_jump:
+		dir.y = 25
+		can_jump = false
 	
 	velocity = velocity - Vector3(velocity.x, 0, velocity.z) * FRICTION_XZ * delta
 	velocity.y = velocity.y - velocity.y * FRICTION_Y * delta
@@ -46,7 +49,11 @@ func move(dir : Vector3, delta : float):
 	var motion = velocity * delta
 	var collision = move_and_collide(motion)
 	
+	can_jump = false
 	if collision:
+		if collision.get_collider().is_jumpable_surface:
+			can_jump = true
+			
 		# Determine vector parallel to move direction that continues the motion
 		var remainder_motion = motion.slide(collision.normal)
 		transform.origin += remainder_motion

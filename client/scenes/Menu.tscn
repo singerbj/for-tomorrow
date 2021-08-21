@@ -12,11 +12,10 @@ __meta__ = {
 
 [node name="TextEdit" type="TextEdit" parent="."]
 margin_left = 362.584
-margin_top = 260.0
+margin_top = 259.416
 margin_right = 662.584
-margin_bottom = 300.0
+margin_bottom = 299.416
 hint_tooltip = "Server IP Address"
-text = "157.230.0.57"
 __meta__ = {
 "_edit_use_anchors_": false
 }
