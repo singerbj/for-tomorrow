@@ -39,10 +39,10 @@ func rotate_player(rot : Vector2):
 func move(dir : Vector3, delta : float, jump : bool):
 	dir = dir.x * transform.basis.x + dir.y * transform.basis.y + dir.z * transform.basis.z
 	
-	# dir.y should already be 0, but just to be sure...
-	# dir.y = 0
 	if jump && can_jump:
-		dir.y = 25
+		dir.y = 20
+		dir.x = dir.x * 20 * 4
+		dir.z = dir.z * 20 * 4
 		can_jump = false
 	
 	velocity = velocity - Vector3(velocity.x, 0, velocity.z) * FRICTION_XZ * delta
@@ -62,7 +62,7 @@ func move(dir : Vector3, delta : float, jump : bool):
 	
 	can_jump = false
 	if collision:
-		if collision.get_collider().is_jumpable_surface:
+		if "is_jumpable_surface" in collision.get_collider() && collision.get_collider().is_jumpable_surface:
 			can_jump = true
 		
 		# Determine vector parallel to move direction that continues the motion
