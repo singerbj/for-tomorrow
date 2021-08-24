@@ -4,6 +4,7 @@ var network = NetworkedMultiplayerENet.new()
 var port = 6969
 var menu_instance = null
 
+const Player = preload("res://scenes/Player.tscn")
 const Menu = preload("res://scenes/Menu.tscn")
 
 func _ready():
@@ -39,7 +40,7 @@ func _ready():
 		add_child(menu_instance)
 	
 func _on_join_signal(ip_address, player_name):
-	print("_on_join_signal")
+	print("Joining game at " +  ip_address + " with player name: " + player_name)
 	ConnectToServer(ip_address, player_name)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	menu_instance.queue_free()
@@ -64,7 +65,6 @@ func _on_connection_failed():
 func _on_connection_succeeded():
 	ClientData.connected = true
 	print("Connected Successfully")
-	
 
 remote func confirm_connection(connect_info):
 	get_node("../Client/Player").set_up(connect_info["player"])

@@ -30,8 +30,9 @@ func _unhandled_input(event):
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 func _physics_process(delta) -> void:
-	$InputHandler.process_input(delta)
-	$PlayersHandler.process_other_players(delta)
+	if ClientData.connected:
+		$InputHandler.process_input(delta)
+		$PlayersHandler.process_other_players(delta)
 
 func handle_tick_update(update : Dictionary):
 	if update.has("missing_packets"):

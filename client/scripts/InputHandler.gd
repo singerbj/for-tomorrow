@@ -8,24 +8,24 @@ func _input(event) -> void:
 
 func process_input(delta):
 	var button_list = []
-	
-	if Input.is_action_pressed("m_forward"):
-		button_list.append("m_forward")
-	if Input.is_action_pressed("m_backward"):
-		button_list.append("m_backward")
-	if Input.is_action_pressed("m_left"):
-		button_list.append("m_left")
-	if Input.is_action_pressed("m_right"):
-		button_list.append("m_right")
-	if Input.is_action_pressed("jump"):
-		button_list.append("jump")
-		
-	if Input.is_action_just_released("scroll_down"):
-		button_list.append("scroll_down")
-	if Input.is_action_just_released("scroll_up"):
-		button_list.append("scroll_up")
-	if Input.is_action_just_pressed("interact"):
-		button_list.append("interact")
+	if !ClientData.chat.is_open:
+		if Input.is_action_pressed("m_forward"):
+			button_list.append("m_forward")
+		if Input.is_action_pressed("m_backward"):
+			button_list.append("m_backward")
+		if Input.is_action_pressed("m_left"):
+			button_list.append("m_left")
+		if Input.is_action_pressed("m_right"):
+			button_list.append("m_right")
+		if Input.is_action_pressed("jump"):
+			button_list.append("jump")
+			
+		if Input.is_action_just_released("scroll_down"):
+			button_list.append("scroll_down")
+		if Input.is_action_just_released("scroll_up"):
+			button_list.append("scroll_up")
+		if Input.is_action_just_pressed("interact"):
+			button_list.append("interact")
 	if Input.is_action_just_pressed("exit"):
 		button_list.append("exit")
 		get_tree().quit()
@@ -44,6 +44,9 @@ func predict_input(input : Dictionary):
 	# Keep information about this input so we can verify it later, when the
 	# server responds: input number (for matching), input results (for verification)
 	var P = get_node("../Player")
+	if P == null:
+		return
+		
 	P.rotate_player(input["Motion"])
 	
 	var move_vector = Vector3(0, 0, 0)
@@ -128,7 +131,6 @@ func verify_input(input : Dictionary, server_input_data : Dictionary):
 		if key != "head_angle": # TODO: remove this?
 			for i in range(len(local_input_data[key])):
 				if abs(local_input_data[key][i] - server_input_data[key][i]) > ClientData.EPSILON:
-					print("key thats different= " + key)
 					diff = true
 					source = key
 					break

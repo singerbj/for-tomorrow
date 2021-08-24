@@ -1,7 +1,7 @@
 extends Spatial
 
 func _ready():
-	print(name)
+	print("Level loaded: " + name)
 
 
 func update_world(world):

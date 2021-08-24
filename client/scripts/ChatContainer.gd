@@ -4,7 +4,7 @@ const MAX_LINES = 10
 const COLOR_TEAM = '#AAAAFF'
 const COLOR_GLOBAL = '#FFFFAA'
 
-var focus_grab : bool = false
+var is_open : bool = false
 var mode : String
 var chatlog: Array
 
@@ -13,7 +13,6 @@ onready var inputLine = get_node("VBoxContainer/InputLine")
 onready var inputField = get_node("VBoxContainer/InputLine/LineEdit")
 onready var inputLabel = get_node("VBoxContainer/InputLine/Label")
 onready var sanitizer = get_node("VBoxContainer/Sanitizer")
-
 
 
 func _ready() -> void:
@@ -38,8 +37,8 @@ func _input(event) -> void:
 
 
 func _on_LineEdit_text_changed(new_text : String) -> void:
-	if not focus_grab:
-		focus_grab = true
+	if !is_open:
+		is_open = true
 		inputField.clear()
 
 
@@ -49,8 +48,8 @@ func _on_LineEdit_focus_entered() -> void:
 
 func _on_LineEdit_focus_exited() -> void:
 	inputField.clear()
-	print("clear")
-	focus_grab = false
+#	print("clear")
+	is_open = false
 	inputLine.visible = false
 
 func _on_LineEdit_text_entered(new_text) -> void:
@@ -82,4 +81,5 @@ func add_message(msg, usr, color_msg = '#ffffff', color_usr = '#ffffff') -> void
 		Log.remove_line(0)
 
 func beep():
-	print("beep")
+#	print("beep")
+	return
