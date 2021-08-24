@@ -15,6 +15,8 @@ cd server
 godot > $logs_folder/server.log 2>&1 &
 echo $! > ../.godot_pids
 
+sleep 1
+
 cd ../client
 for i in $(seq 1 $number_of_clients);
 do

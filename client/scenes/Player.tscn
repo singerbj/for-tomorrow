@@ -6,6 +6,7 @@
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.502248
+height = 2.6
 
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 0.15, 0.15, 0.5 )
@@ -14,11 +15,11 @@ size = Vector3( 0.15, 0.15, 0.5 )
 script = ExtResource( 1 )
 
 [node name="Body" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0 )
 shape = SubResource( 1 )
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0 )
 fov = 90.0
 
 [node name="MeshInstance" type="MeshInstance" parent="Camera"]

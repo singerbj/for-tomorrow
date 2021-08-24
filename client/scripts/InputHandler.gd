@@ -115,27 +115,31 @@ func verify_input(input : Dictionary, server_input_data : Dictionary):
 	#print("Input ", input_id, " server: ", server_input_data)
 	
 	var diff = false
+	var source = ""
 
 	for key in server_input_data.keys():
-		if key == "head_angle":
-			if abs(local_input_data[key] - server_input_data[key]) > ClientData.EPSILON:
-				diff = true
-				break
-			else:
-				continue
+#		if key == "head_angle": # TODO: remove this?
+#			if abs(local_input_data[key] - server_input_data[key]) > ClientData.EPSILON:
+#				diff = true
+#				break
+#			else:
+#				continue
 		
-		for i in range(len(local_input_data[key])):
-			if abs(local_input_data[key][i] - server_input_data[key][i]) > ClientData.EPSILON:
-				diff = true
-				break
+		if key != "head_angle": # TODO: remove this?
+			for i in range(len(local_input_data[key])):
+				if abs(local_input_data[key][i] - server_input_data[key][i]) > ClientData.EPSILON:
+					print("key thats different= " + key)
+					diff = true
+					source = key
+					break
 
 	if not diff:
 		return
 	else:
 		ClientData.prediction_errors += 1
-		# print("Prediction error in input ", input_id, " (match ", input_queue_data["input_id"], "), Error rate ",
-		#	100 * ClientData.prediction_errors / float(ClientData.input_counter), "%, Total: ", ClientData.prediction_errors,
-		#	", Inputs in queue: ", len(ClientData.input_queue))
+		print("Prediction error in input ", input_id, " (match ", input_queue_data["input_id"], ") for '" + source + "', Error rate ",
+			100 * ClientData.prediction_errors / float(ClientData.input_counter), "%, Total: ", ClientData.prediction_errors,
+			", Inputs in queue: ", len(ClientData.input_queue))
 		get_node("../Player").transform = Utility.transform_from_array(server_input_data["transform"])
 		get_node("../Player").velocity = Utility.vec3_from_array(server_input_data["velocity"])
 		get_node("../Player").head_angle = server_input_data["head_angle"]
