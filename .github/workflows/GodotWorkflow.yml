@@ -94,8 +94,8 @@ jobs:
                 mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable ~/.local/share/godot/templates/${GODOT_VERSION}.stable
             - name: Mac Build
               run: |
-                godot -v --path ./client --export "Mac OSX" ./build/mac/$EXPORT_NAME-client
-                godot -v --path ./server --export "Mac OSX" ./build/mac/$EXPORT_NAME-server
+                godot -v --path ./client --export "Mac OSX" ./build/mac/$EXPORT_NAME-client.zip
+                godot -v --path ./server --export "Mac OSX" ./build/mac/$EXPORT_NAME-server.zip
             - name: Upload Client Artifact
               uses: actions/upload-artifact@v1
               with:
