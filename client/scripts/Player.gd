@@ -35,7 +35,9 @@ func rotate_player(rot : Vector2):
 	head_angle = clamp(head_angle, -80, 90)
 	$Camera.rotation_degrees.x = head_angle
 
-
+func check_can_jump(node):
+	return "is_jumpable_surface" in node && node.is_jumpable_surface
+	
 func move(dir : Vector3, delta : float, jump : bool):
 	dir = dir.x * transform.basis.x + dir.y * transform.basis.y + dir.z * transform.basis.z
 	
@@ -62,8 +64,12 @@ func move(dir : Vector3, delta : float, jump : bool):
 	
 	can_jump = false
 	if collision:
-		if "is_jumpable_surface" in collision.get_collider() && collision.get_collider().is_jumpable_surface:
-			can_jump = true
+		can_jump = check_can_jump(collision.get_collider())
+		if can_jump == false:
+			var parent = collision.get_collider().get_parent()
+			while(can_jump == false && parent != null):
+				can_jump = check_can_jump(parent)
+				parent = parent.get_parent()
 		
 		# Determine vector parallel to move direction that continues the motion
 		var remainder_motion = motion.slide(collision.normal)
