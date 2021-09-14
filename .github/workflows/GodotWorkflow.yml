@@ -30,6 +30,7 @@ jobs:
               uses: actions/checkout@v1
             - name: Setup
               run: |
+                ./setup_dev.sh
                 mkdir -v -p ./server/build/linux ./server/build/windows ./server/build/mac ./server/build/web
                 mkdir -v -p ./client/build/linux ./client/build/windows ./client/build/mac ./client/build/web
                 mkdir -v -p ~/.local/share/godot/templates
@@ -59,6 +60,7 @@ jobs:
               uses: actions/checkout@v1
             - name: Setup
               run: |
+               ./setup_dev.sh
                 mkdir -v -p ./server/build/linux ./server/build/windows ./server/build/mac ./server/build/web
                 mkdir -v -p ./client/build/linux ./client/build/windows ./client/build/mac ./client/build/web
                 mkdir -v -p ~/.local/share/godot/templates
@@ -88,6 +90,7 @@ jobs:
               uses: actions/checkout@v1
             - name: Setup
               run: |
+                ./setup_dev.sh
                 mkdir -v -p ./server/build/linux ./server/build/windows ./server/build/mac ./server/build/web
                 mkdir -v -p ./client/build/linux ./client/build/windows ./client/build/mac ./client/build/web
                 mkdir -v -p ~/.local/share/godot/templates
