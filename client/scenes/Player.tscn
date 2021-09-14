@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://crosshair.png" type="Texture" id=2]
-[ext_resource path="res://materials/teal.material" type="Material" id=3]
+[ext_resource path="res://shared/materials/teal.material" type="Material" id=3]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.502248

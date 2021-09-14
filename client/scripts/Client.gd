@@ -1,6 +1,6 @@
 extends Node
 
-const Level = preload("res://scenes/Level2.tscn")
+const Level = preload("res://shared/scenes/Level2.tscn")
 const Player = preload("res://scenes/Player.tscn")
 const Chat = preload("res://scenes/ChatContainer.tscn")
 
