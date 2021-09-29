@@ -21,11 +21,12 @@ func process_client_input(buffer):
 			get_node("..").send_back_input_data(pid, input, input_data)
 	
 
-func execute_client_input(P, input):
-	P.rotate_player(input["Motion"])
+func execute_client_input(player, input):
+	player.rotate_player(input["Motion"])
 	
 	var move_vector = Vector3(0, 0, 0)
 	var jump = false
+	var fire = false
 	for button in input["Buttons"]:
 		if button in ["m_forward", "m_backward", "m_left", "m_right"]:
 			if button == "m_forward":
@@ -38,10 +39,13 @@ func execute_client_input(P, input):
 				move_vector.x += 1
 		elif button == "jump":
 			jump = true
-				
+		elif button == "fire":
+			fire = true				
 	move_vector = move_vector.normalized()
 	
-	P.move(move_vector, input["delta"], jump)	
+	player.move(move_vector, input["delta"], jump)
+	if fire:
+		ShotManager.fire_shot(player)
 
 
 

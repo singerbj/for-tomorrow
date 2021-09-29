@@ -19,6 +19,8 @@ func process_input(delta):
 			button_list.append("m_right")
 		if Input.is_action_pressed("jump"):
 			button_list.append("jump")
+		if Input.is_action_pressed("fire"):
+			button_list.append("fire")
 			
 		if Input.is_action_just_released("scroll_down"):
 			button_list.append("scroll_down")

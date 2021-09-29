@@ -66,3 +66,4 @@ func move(dir : Vector3, delta : float, jump : bool):
 		
 		# Update velocity to match
 		velocity = velocity.slide(collision.normal)
+

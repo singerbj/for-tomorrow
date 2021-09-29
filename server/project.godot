@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 ServerData="*res://scripts/ServerData.gd"
 Utility="*res://scripts/Utility.gd"
+ShotManager="*res://scripts/ShotManager.gd"
 
 [debug]
 
