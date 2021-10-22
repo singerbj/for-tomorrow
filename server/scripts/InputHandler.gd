@@ -3,6 +3,7 @@ var FRICTION_MULT = 0.1				# Multiplied with velocity for friction
 
 
 func process_client_input(buffer):
+	ShotManager.clear_shots()
 	for pid in buffer.keys():
 		# deep copy to not modify original buffer object
 		var queue = buffer[pid].duplicate(true)
@@ -18,7 +19,9 @@ func process_client_input(buffer):
 			input_data["velocity"] = Utility.array_from_vec3(ServerData.players[pid].velocity)
 			input_data["head_angle"] = ServerData.players[pid].head_angle
 			# input in this case refers to the last input out of the while loop
-			get_node("..").send_back_input_data(pid, input, input_data)
+			get_node("..").send_input(pid, input, input_data)
+			
+		get_node("..").send_shots(pid, ShotManager.get_shots())
 	
 
 func execute_client_input(player, input):

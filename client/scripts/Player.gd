@@ -32,7 +32,7 @@ func rotate_player(rot : Vector2):
 	rotation_degrees.y -= ClientData.SENS_MULTIPLIER * rot.x
 	# Rotate head
 	head_angle -= ClientData.SENS_MULTIPLIER * rot.y
-	head_angle = clamp(head_angle, -80, 90)
+	head_angle = clamp(head_angle, -80, 80)
 	$Camera.rotation_degrees.x = head_angle
 
 func check_can_jump(node):
@@ -91,19 +91,42 @@ func construct(block_id):
 	Server.construct(target, block_id)
 	
 
+# TODO: use the shot manager for this or something
+var ray_length = 1000
+
+func fire_shot():
+	var from = $Camera.project_ray_origin(get_viewport().get_mouse_position())
+	var to = from + $Camera.project_ray_normal(get_viewport().get_mouse_position()) * ray_length
+	
+	# use global coordinates, not local to node
+#	var space_state = get_world().direct_space_state
+#	var all_results = []
+#	var all_colliders = []
+#	var continue_casting = true
+#	while(continue_casting):		
+#		var result = space_state.intersect_ray(from, to, [self] + all_colliders)
+#		if 'collider_id' in result:
+#			all_results.append(result)
+#			all_colliders.append(result.collider)
+#		else:
+#			continue_casting = false
+
+	var color = Color(0.5, 0.5, 0.5)
+#	if all_results.size() > 0:
+#		color = Color(0.5, 0, 0)
+#		to = all_results[0].position
 	
 	
+	var line = ImmediateGeometry.new()
+	var mat = SpatialMaterial.new()
+	mat.flags_unshaded = true
+	mat.vertex_color_use_as_albedo = true
+	line.material_override = mat
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	get_node('/root').add_child(line)
+	line.clear()
+	line.begin(Mesh.PRIMITIVE_LINE_STRIP)
+	line.set_color(color)
+	line.add_vertex(from)
+	line.add_vertex(to)
+	line.end()

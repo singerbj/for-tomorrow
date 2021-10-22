@@ -1,10 +1,8 @@
 extends Node
 
-
 func _input(event) -> void:
 	if event is InputEventMouseMotion && Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
-		ClientData.total_mouse_motion += event.relative
-	
+		ClientData.total_mouse_motion += event.relative	
 
 func process_input(delta):
 	var button_list = []
@@ -65,7 +63,9 @@ func predict_input(input : Dictionary):
 				move_vector.x += 1
 		elif button == "jump":
 			jump = true
-				
+		elif button == "fire":
+			P.fire_shot()		
+			
 	move_vector = move_vector.normalized()
 	P.move(move_vector, input["delta"], jump)
 		
@@ -87,12 +87,17 @@ func push_to_input_queue(input : Dictionary, input_data) -> int:
 	ClientData.input_queue.push_back({"input_id" : ClientData.input_counter, "input" : input, "input_data" : input_data, "timestamp" : time})
 	return ClientData.input_counter
 	
-	
-func verify_input(input : Dictionary, server_input_data : Dictionary):
+func recieve_shots(shots : Array):
+	#TODO move this to shot manager at soem point
+	for shot in shots:
+		fire_shot(shot.from, shot.to, shot.color)
+		
+func recieve_input(input : Dictionary, server_input_data : Dictionary):
 	# Search for matching input id in the input queue. Discard all older inputs,
 	# then verify that the input_data the server sent back and that we predicted
 	# matches
 	# if not, set server's input_data as current data
+	
 	var input_id = input["input_id"]
 	if ClientData.input_queue.empty():
 		return
@@ -152,6 +157,27 @@ func verify_input(input : Dictionary, server_input_data : Dictionary):
 		for i in range(len(ClientData.input_queue)):
 			var corrected_input_data = predict_input(ClientData.input_queue[i]["input"])
 			ClientData.input_queue[i]["input_data"] = corrected_input_data
+
+	
+	
+	
+	
+# TODO: use the shot manager for this or something
+var ray_length = 1000
+func fire_shot(from, to, color):
+	var line = ImmediateGeometry.new()
+	var mat = SpatialMaterial.new()
+	mat.flags_unshaded = true
+	mat.vertex_color_use_as_albedo = true
+	line.material_override = mat
+	
+	get_node('/root').add_child(line)
+	line.clear()
+	line.begin(Mesh.PRIMITIVE_LINE_STRIP)
+	line.set_color(color)
+	line.add_vertex(from)
+	line.add_vertex(to)
+	line.end()
 
 
 #func legacy_predict_client_input(input) -> Array:

@@ -22,8 +22,12 @@ func rotate_player(rot : Vector2):
 	rotation_degrees.y -= ServerData.SENS_MULTIPLIER * rot.x
 	# Rotate head
 	head_angle -= ServerData.SENS_MULTIPLIER * rot.y
-	head_angle = clamp(head_angle, -80, 90)
+	head_angle = clamp(head_angle, -80, 80)
+	$Camera.rotation_degrees.x = head_angle
 
+func get_camera():
+	return $Camera
+	
 func check_can_jump(node):
 	return "is_jumpable_surface" in node && node.is_jumpable_surface
 
