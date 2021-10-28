@@ -9,8 +9,12 @@ func _ready():
 	shots = []
 	
 
-#func _process(delta):
-#	# remove lines
+var time = 0
+func _process(delta):
+	time += delta;
+	if (time / 2) > 1:
+		lines = []
+	
 
 func clear_shots():
 	for line in lines:
@@ -43,24 +47,8 @@ func fire_shot(player):
 		color = Color(0.5, 0, 0)
 		to = all_results[0].position
 	
-	draw_line(from, to, color)
-
-		
-func draw_line(from, to, color):
-	var line = ImmediateGeometry.new()
-	var mat = SpatialMaterial.new()
-	mat.flags_unshaded = true
-	mat.vertex_color_use_as_albedo = true
-	line.material_override = mat
-	
-	get_node('/root').add_child(line)
-	line.clear()
-	line.begin(Mesh.PRIMITIVE_LINE_STRIP)
-	line.set_color(color)
-	line.add_vertex(from)
-	line.add_vertex(to)
-	line.end()
-
-	lines.append(line)
 	shots.append({ 'from': from, 'to': to, 'color': color })
+		
+	
+	
 				

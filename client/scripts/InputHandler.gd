@@ -1,5 +1,19 @@
 extends Node
 
+var lines
+var time = 0
+
+func _ready() -> void:
+	lines = []
+	
+func _physics_process(delta):
+	time += delta;
+	if time > 0.1:
+		for line in lines:
+			line.queue_free()
+		lines = []
+		time = 0
+	
 func _input(event) -> void:
 	if event is InputEventMouseMotion && Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
 		ClientData.total_mouse_motion += event.relative	
@@ -178,6 +192,7 @@ func fire_shot(from, to, color):
 	line.add_vertex(from)
 	line.add_vertex(to)
 	line.end()
+	lines.append(line)
 
 
 #func legacy_predict_client_input(input) -> Array:

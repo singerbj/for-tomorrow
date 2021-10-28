@@ -99,7 +99,6 @@ remote func recieve_shots(shots : Array):
 func _send_message(msg: String, mode: String) -> void:
 	rpc_id(1, "_receive_message", msg, mode)
 
-
 remote func _receive_server_message(msg : String, usr : String, chat_mode : String = "normal", color_msg = '#ffffff', color_usr = '#ffffff') -> void:
 	print("got msg from server ", msg)
 	get_node("../Client/Chat").receive_from_server(msg, usr, chat_mode, color_msg, color_usr)

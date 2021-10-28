@@ -95,38 +95,23 @@ func construct(block_id):
 var ray_length = 1000
 
 func fire_shot():
-	var from = $Camera.project_ray_origin(get_viewport().get_mouse_position())
-	var to = from + $Camera.project_ray_normal(get_viewport().get_mouse_position()) * ray_length
+	pass
+#	var from = $Camera.project_ray_origin(get_viewport().get_mouse_position())
+#	var to = from + $Camera.project_ray_normal(get_viewport().get_mouse_position()) * ray_length
+#
+#	var color = Color(0.5, 0.5, 0.5)
+#
+#	var line = ImmediateGeometry.new()
+#	var mat = SpatialMaterial.new()
+#	mat.flags_unshaded = true
+#	mat.vertex_color_use_as_albedo = true
+#	line.material_override = mat
+#
+#	get_node('/root').add_child(line)
+#	line.clear()
+#	line.begin(Mesh.PRIMITIVE_LINE_STRIP)
+#	line.set_color(color)
+#	line.add_vertex(from)
+#	line.add_vertex(to)
+#	line.end()
 	
-	# use global coordinates, not local to node
-#	var space_state = get_world().direct_space_state
-#	var all_results = []
-#	var all_colliders = []
-#	var continue_casting = true
-#	while(continue_casting):		
-#		var result = space_state.intersect_ray(from, to, [self] + all_colliders)
-#		if 'collider_id' in result:
-#			all_results.append(result)
-#			all_colliders.append(result.collider)
-#		else:
-#			continue_casting = false
-
-	var color = Color(0.5, 0.5, 0.5)
-#	if all_results.size() > 0:
-#		color = Color(0.5, 0, 0)
-#		to = all_results[0].position
-	
-	
-	var line = ImmediateGeometry.new()
-	var mat = SpatialMaterial.new()
-	mat.flags_unshaded = true
-	mat.vertex_color_use_as_albedo = true
-	line.material_override = mat
-	
-	get_node('/root').add_child(line)
-	line.clear()
-	line.begin(Mesh.PRIMITIVE_LINE_STRIP)
-	line.set_color(color)
-	line.add_vertex(from)
-	line.add_vertex(to)
-	line.end()
