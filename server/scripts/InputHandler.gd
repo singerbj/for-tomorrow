@@ -4,6 +4,7 @@ var FRICTION_MULT = 0.1				# Multiplied with velocity for friction
 
 func process_client_input(buffer):
 	ShotManager.clear_shots()
+	var players_who_hit = []
 	for pid in buffer.keys():
 		# deep copy to not modify original buffer object
 		var queue = buffer[pid].duplicate(true)
@@ -11,7 +12,9 @@ func process_client_input(buffer):
 		var input
 		while not queue.empty():
 			input = queue.pop_front()
-			execute_client_input(ServerData.players[pid], input)
+			var hit = execute_client_input(pid, ServerData.players[pid], input)
+			if hit && !players_who_hit.has(pid):
+				players_who_hit.append(pid)
 		
 		if input:
 			var input_data = {}
@@ -21,10 +24,10 @@ func process_client_input(buffer):
 			# input in this case refers to the last input out of the while loop
 			get_node("..").send_input(pid, input, input_data)
 			
-		get_node("..").send_shots(pid, ShotManager.get_shots())
-	
+	for pid in ServerData.players:
+		get_node("..").send_shots(pid, ShotManager.get_shots(), players_who_hit.has(pid))
 
-func execute_client_input(player, input):
+func execute_client_input(pid, player, input):
 	player.rotate_player(input["Motion"])
 	
 	var move_vector = Vector3(0, 0, 0)
@@ -47,8 +50,13 @@ func execute_client_input(player, input):
 	move_vector = move_vector.normalized()
 	
 	player.move(move_vector, input["delta"], jump)
+		
 	if fire:
-		ShotManager.fire_shot(player)
+		return ShotManager.fire_shot(pid, player)
+	else:
+		return false
+	
+	
 
 
 

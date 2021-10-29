@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://crosshair.png" type="Texture" id=2]
 [ext_resource path="res://shared/materials/teal.material" type="Material" id=3]
+[ext_resource path="res://hitmarker.png" type="Texture" id=4]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.502248
@@ -44,6 +45,16 @@ __meta__ = {
 
 [node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control"]
 texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hitmarker" type="TextureRect" parent="CanvasLayer/Control"]
+margin_left = -14.0475
+margin_top = -13.8988
+margin_right = 17.9525
+margin_bottom = 18.1012
+texture = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

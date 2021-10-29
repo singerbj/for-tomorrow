@@ -93,8 +93,8 @@ remote func report_diagnostics(diagnostics : Dictionary):
 remote func recieve_input(input : Dictionary, input_data : Dictionary):
 	get_node("../Client/InputHandler").recieve_input(input, input_data)
 
-remote func recieve_shots(shots : Array):
-	get_node("../Client/InputHandler").recieve_shots(shots)
+remote func recieve_shots(shots : Array, hit : bool):
+	get_node("../Client/InputHandler").recieve_shots(shots, hit)
 
 func _send_message(msg: String, mode: String) -> void:
 	rpc_id(1, "_receive_message", msg, mode)

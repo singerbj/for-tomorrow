@@ -18,9 +18,14 @@ var weapon_list := ["gun"]
 
 func _ready() -> void:
 	$CanvasLayer/Control/Label.text = weapon
+	$CanvasLayer/Control/Hitmarker.set("modulate", Color(1, 1, 1, 0))
 
 func _process(delta):
 	$CanvasLayer/Control/Label2.set_text(str(Engine.get_frames_per_second()))
+	
+func _physics_process(delta):
+	var alpha = $CanvasLayer/Control/Hitmarker.get("modulate").a
+	$CanvasLayer/Control/Hitmarker.set("modulate", Color(1, 1, 1, alpha - 0.1))
 	
 func set_up(connect_info : Dictionary):
 	# Called in server.confirm_connection
@@ -90,9 +95,12 @@ func construct(block_id):
 		#c.set_cell_item(target.x, target.y, target.z, 0)
 	Server.construct(target, block_id)
 	
+	
+func show_hitmarker():
+	$CanvasLayer/Control/Hitmarker.set("modulate", Color(1, 1, 1, 1))
 
 # TODO: use the shot manager for this or something
-var ray_length = 1000
+#var ray_length = 1000
 
 func fire_shot():
 	pass

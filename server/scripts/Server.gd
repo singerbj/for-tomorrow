@@ -114,8 +114,8 @@ func _send_message(msg : String, usr : String, chat_mode : String = "normal", co
 func send_input(pid, input : Dictionary, input_data : Dictionary):
 	rpc_unreliable_id(pid, "recieve_input", input, input_data)
 	
-func send_shots(pid, shots : Array):
-	rpc_unreliable_id(pid, "recieve_shots", shots)
+func send_shots(pid, shots : Array, hit : bool):
+	rpc_unreliable_id(pid, "recieve_shots", shots, hit)
 
 
 

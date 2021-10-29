@@ -8,7 +8,7 @@ func _ready() -> void:
 	
 func _physics_process(delta):
 	time += delta;
-	if time > 0.1:
+	if time > 0.25:
 		for line in lines:
 			line.queue_free()
 		lines = []
@@ -16,7 +16,7 @@ func _physics_process(delta):
 	
 func _input(event) -> void:
 	if event is InputEventMouseMotion && Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
-		ClientData.total_mouse_motion += event.relative	
+		ClientData.total_mouse_motion += event.relative
 
 func process_input(delta):
 	var button_list = []
@@ -101,10 +101,18 @@ func push_to_input_queue(input : Dictionary, input_data) -> int:
 	ClientData.input_queue.push_back({"input_id" : ClientData.input_counter, "input" : input, "input_data" : input_data, "timestamp" : time})
 	return ClientData.input_counter
 	
-func recieve_shots(shots : Array):
-	#TODO move this to shot manager at soem point
+func recieve_shots(shots : Array, hit : bool):
+	#TODO move this to shot manager at some point
 	for shot in shots:
 		fire_shot(shot.from, shot.to, shot.color)
+		
+	#TODO show hitmarker if player got a hit
+	var P = get_node("../Player")
+#	print(P, hit)
+	if P == null:
+		return
+	elif hit:
+		P.show_hitmarker()
 		
 func recieve_input(input : Dictionary, server_input_data : Dictionary):
 	# Search for matching input id in the input queue. Discard all older inputs,
