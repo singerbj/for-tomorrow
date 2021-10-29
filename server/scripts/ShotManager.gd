@@ -28,6 +28,7 @@ func get_shots(): #YYYYYYEEEAAAAAAAHHHHHHH
 var player_last_shots = {}
 func fire_shot(pid, player):
 	var now = OS.get_system_time_msecs()
+	#TODO: this all has to depend on the gun, not a random timeout
 	if !(pid in player_last_shots) || (now - 300) > player_last_shots[pid]:
 		player_last_shots[pid] = now
 		var from = player.get_camera().project_ray_origin(Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2))

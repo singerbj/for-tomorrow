@@ -33,6 +33,10 @@ func process_input(delta):
 			button_list.append("jump")
 		if Input.is_action_pressed("fire"):
 			button_list.append("fire")
+		if Input.is_action_pressed("aim"):
+			button_list.append("aim")
+		else:
+			button_list.append("unaim")
 			
 		if Input.is_action_just_released("scroll_down"):
 			button_list.append("scroll_down")
@@ -78,7 +82,11 @@ func predict_input(input : Dictionary):
 		elif button == "jump":
 			jump = true
 		elif button == "fire":
-			P.fire_shot()		
+			P.fire_shot()
+		elif button == "aim":
+			P.aim()
+		elif button == "unaim":
+			P.unaim()	
 			
 	move_vector = move_vector.normalized()
 	P.move(move_vector, input["delta"], jump)

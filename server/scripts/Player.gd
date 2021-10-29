@@ -37,9 +37,7 @@ func move(dir : Vector3, delta : float, jump : bool):
 	dir = dir.x * transform.basis.x + dir.y * transform.basis.y + dir.z * transform.basis.z
 	
 	if jump && can_jump:
-		dir.y = 20
-		dir.x = dir.x * 20 * 2
-		dir.z = dir.z * 20 * 2
+		dir.y = 40
 		can_jump = false
 	
 	velocity = velocity - Vector3(velocity.x, 0, velocity.z) * FRICTION_XZ * delta
