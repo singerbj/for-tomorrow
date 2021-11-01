@@ -2,7 +2,7 @@ extends Node
 
 var network = NetworkedMultiplayerENet.new()
 var Player = preload("res://scenes/Player.tscn")
-var Level = preload("res://shared/scenes/Level2.tscn")
+var Level = preload("res://shared/scenes/ArenaTest2.tscn")
 
 func _ready():
 	

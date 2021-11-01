@@ -19,6 +19,8 @@ shape = SubResource( 1 )
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0 )
 fov = 90.0
+near = 0.01
+far = 500.0
 
 [node name="Gun" parent="Camera" instance=ExtResource( 5 )]
 transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0.06, -0.06, -0.2 )
