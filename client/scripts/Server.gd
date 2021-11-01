@@ -74,8 +74,8 @@ remote func players_update(timestamp, other_players):
 	get_node("../Client/PlayersHandler").push_players_update(timestamp, other_players)
 
 
-remote func world_update(world):
-	get_node("../Client/Level").update_world(world)
+#remote func world_update(world):
+#	get_node("../Client/Level").update_world(world)
 	
 	
 func report_input(input_id : int, input : Dictionary) -> void:

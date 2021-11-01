@@ -5,6 +5,8 @@ extends Node
 
 const Bot = preload("res://scenes/Bot.tscn")
 
+var client_time_offset = null
+
 func push_players_update(timestamp : int, other_player_info : Dictionary):
 	var compiled_player_info = {}
 	for pid in other_player_info.keys():
@@ -19,9 +21,6 @@ func push_players_update(timestamp : int, other_player_info : Dictionary):
 	
 
 func process_other_players(delta):
-	# TODO Ensure time sync
-	var client_time = OS.get_system_time_msecs() - ClientData.interp_time_ms
-	
 	if ClientData.player_buffer.size() <= 0: # empty does not work?
 		return
 		
@@ -31,6 +30,13 @@ func process_other_players(delta):
 	# var prev_state = null 	# Only relevant in extrapolation case
 	var begin_state = null
 	var end_state = null
+
+	# TODO: Check for the offset in its own independent, reliable communication method. Do it like every so many seconds maybe?
+	if client_time_offset == null:
+		# The following assumes that the time difference between the server and client will be the same for the whole game (we should do the above todo)
+		client_time_offset = ClientData.player_buffer[0]["timestamp"] - OS.get_system_time_msecs()
+	
+	var client_time = (OS.get_system_time_msecs() + client_time_offset) - ClientData.interp_time_ms
 	
 	# Find state immediately before client time
 	var obsolete_states = -1
