@@ -81,11 +81,17 @@ func _peer_connected(player_id):
 func _peer_disconnected(player_id):
 	$PlayerManager.remove_player(player_id)
 
-
 remote func report_construct(position, block_id):
 	var player_id = get_tree().get_rpc_sender_id()
 	ServerData.world[position] = block_id
-	
+
+remote func fetch_server_time(client_time):
+	var player_id = get_tree().get_rpc_sender_id()
+	rpc_id(player_id, "return_server_time", OS.get_system_time_msecs(), client_time)
+
+remote func determine_latency(client_time):
+	var player_id = get_tree().get_rpc_sender_id()
+	rpc_id(player_id, "return_latency", client_time)	
 	
 remote func report_client_input(input_id : int, input : Dictionary):
 	var player_id = get_tree().get_rpc_sender_id()

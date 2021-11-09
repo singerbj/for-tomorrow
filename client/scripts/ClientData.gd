@@ -16,9 +16,13 @@ var interp_time_ms : float = 50	# 50ms
 # How long to keep extrapolating player movements after not receiving data anymore
 var max_extrapolation_time_ms : float = 500 # 500ms
 
-var start_time
-
 const EPSILON = 1e-3
 const SENS_MULTIPLIER : float = 0.05
 
 var connected = false
+
+var client_clock = 0
+var decimal_collector : float = 0
+var latency_array = []
+var latency = 0
+var delta_latency = 0

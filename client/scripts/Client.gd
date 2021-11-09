@@ -20,7 +20,6 @@ func _ready():
 	ClientData.chat.set_name("Chat")
 	add_child(ClientData.chat)
 	
-	ClientData.start_time = OS.get_system_time_msecs()
 	
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("change_mouse_mode"):

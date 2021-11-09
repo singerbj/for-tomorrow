@@ -31,17 +31,10 @@ func process_other_players(delta):
 	var begin_state = null
 	var end_state = null
 
-	# TODO: Check for the offset in its own independent, reliable communication method. Do it like every so many seconds maybe?
-	if client_time_offset == null:
-		# The following assumes that the time difference between the server and client will be the same for the whole game (we should do the above todo)
-		client_time_offset = ClientData.player_buffer[0]["timestamp"] - OS.get_system_time_msecs()
-	
-	var client_time = (OS.get_system_time_msecs() + client_time_offset) - ClientData.interp_time_ms
-	
 	# Find state immediately before client time
 	var obsolete_states = -1
 	for i in range(ClientData.player_buffer.size()):
-		if ClientData.player_buffer[i]["timestamp"] < client_time:
+		if ClientData.player_buffer[i]["timestamp"] < ClientData.client_clock:
 			obsolete_states += 1
 			begin_state = ClientData.player_buffer[i]
 		else:
@@ -49,7 +42,7 @@ func process_other_players(delta):
 			
 	# Find state immediately ahead of client time
 	for i in range(ClientData.player_buffer.size()-1, -1, -1): # Iterate to -1 to include index 0...
-		if ClientData.player_buffer[i]["timestamp"] > client_time:
+		if ClientData.player_buffer[i]["timestamp"] > ClientData.client_clock:
 			end_state = ClientData.player_buffer[i]
 		else:
 			break
@@ -70,7 +63,7 @@ func process_other_players(delta):
 	elif begin_state == null and end_state != null:
 		new_state = end_state["player_info"]
 	elif begin_state != null and end_state != null:
-		new_state = interpolate_players_state(begin_state, end_state, client_time)
+		new_state = interpolate_players_state(begin_state, end_state, ClientData.client_time)
 		
 	update_players(new_state)
 	

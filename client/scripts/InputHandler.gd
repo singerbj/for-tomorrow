@@ -104,7 +104,7 @@ func push_to_input_queue(input : Dictionary, input_data) -> int:
 	# along with an id, which it assigns. The ID is returned. This ID
 	# will later be used to match it with the answer from the server for
 	# verification
-	var time = OS.get_system_time_msecs()
+	var time = ClientData.client_clock
 	ClientData.input_counter += 1
 	ClientData.input_queue.push_back({"input_id" : ClientData.input_counter, "input" : input, "input_data" : input_data, "timestamp" : time})
 	return ClientData.input_counter

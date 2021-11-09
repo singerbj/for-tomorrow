@@ -39,6 +39,14 @@ func _ready():
 		menu_instance.connect("join_signal", self, "_on_join_signal")
 		add_child(menu_instance)
 	
+func _physics_process(delta):
+	ClientData.client_clock += int(delta * 1000) + ClientData.delta_latency
+	ClientData.delta_latency = 0
+	ClientData.decimal_collector += (delta * 1000) - int(delta * 1000)
+	if ClientData.decimal_collector >- 1.00:
+		ClientData.client_clock += 1
+		ClientData.decimal_collector =-1.00
+
 func _on_join_signal(ip_address, player_name):
 	print("Joining game at " +  ip_address + " with player name: " + player_name)
 	ConnectToServer(ip_address, player_name)
@@ -62,9 +70,40 @@ func _on_connection_failed():
 	print("Failed to connect")
 	
 	
-func _on_connection_succeeded():
+func _on_connection_succeeded():	
 	ClientData.connected = true
 	print("Connected Successfully")
+	rpc_id(1, "fetch_server_time", OS.get_system_time_msecs())
+	var timer = Timer.new()
+	timer.wait_time = 0.5
+	timer.autostart = true
+	timer.connect("timeout", self, "_determine_latency")
+	self.add_child(timer)
+
+remote func return_server_time(server_time, client_time):
+	var latency = (OS.get_system_time_msecs() - client_time) / 2
+	ClientData.client_clock = server_time + latency
+
+func _determine_latency():
+	rpc_id(1, "determine_latency", OS.get_system_time_msecs())
+	
+remote func return_latency(client_time):
+	ClientData.latency_array.append((OS.get_system_time_msecs() - client_time) / 2)
+	if ClientData.latency_array.size() == 9:
+		var total_latency = 0
+		ClientData.latency_array.sort()
+		var mid_point = ClientData.latency_array[4]
+		for i in range(ClientData.latency_array.size() - 1, -1, -1):
+			if ClientData.latency_array[i] > (2 * mid_point) && ClientData.latency_array[i] > 20:
+				ClientData.latency_array.remove(i)
+			else:
+				total_latency += ClientData.latency_array[i]
+		ClientData.delta_latency = (total_latency/ ClientData.latency_array.size()) - ClientData.latency
+		ClientData.latency = total_latency / ClientData.latency_array.size()
+		print("New Latency", ClientData.latency)
+		print("Delta Latency", ClientData.delta_latency)
+		ClientData.latency_array.clear()
+			
 
 remote func confirm_connection(connect_info):
 	get_node("../Client/Player").set_up(connect_info["player"])
