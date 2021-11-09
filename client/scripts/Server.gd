@@ -26,7 +26,8 @@ func _ready():
 				player_name = formatted_arg_array[1]
 				print("Using command line specified name: " + player_name)
 			else:
-				print("Command line name not specified")	
+				print("Command line name not specified")
+			
 	
 	if ip_address != null && player_name != null:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -45,7 +46,7 @@ func _physics_process(delta):
 	ClientData.decimal_collector += (delta * 1000) - int(delta * 1000)
 	if ClientData.decimal_collector >- 1.00:
 		ClientData.client_clock += 1
-		ClientData.decimal_collector =-1.00
+		ClientData.decimal_collector =- 1.00
 
 func _on_join_signal(ip_address, player_name):
 	print("Joining game at " +  ip_address + " with player name: " + player_name)
@@ -110,6 +111,7 @@ remote func confirm_connection(connect_info):
 	
 	
 remote func players_update(timestamp, other_players):
+#	print("====> ", timestamp, " ~ ", ClientData.client_clock)	
 	get_node("../Client/PlayersHandler").push_players_update(timestamp, other_players)
 
 

@@ -88,14 +88,14 @@ func interpolate_players_state(begin, end, time) -> Dictionary:
 	return new_state
 
 
-func extrapolate_players_state(begin, prev_state, time) -> Dictionary:
-	return begin
-	# TODO Extrapolation on transforms
-	if time > begin["timestamp"] + ClientData.max_extrapolation_time_ms:
-		time = ClientData.max_extrapolation_time
-		
-	# Yes its stupid shut up # TODO...?
-	return interpolate_players_state(prev_state, begin, time)
+#func extrapolate_players_state(begin, prev_state, time) -> Dictionary:
+#	return begin
+#	# TODO Extrapolation on transforms
+#	if time > begin["timestamp"] + ClientData.max_extrapolation_time_ms:
+#		time = ClientData.max_extrapolation_time
+#
+#	# Yes its stupid shut up # TODO...?
+#	return interpolate_players_state(prev_state, begin, time)
 
 
 func update_players(new_state):

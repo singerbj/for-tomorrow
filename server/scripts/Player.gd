@@ -1,73 +1,55 @@
-extends KinematicBody
+extends "res://shared/scripts/BasePlayer.gd"
 
-export var is_player = true;
+var player_buffer = []
 
-# Forces
-const ACC_GRAV = Vector3(0, -100, 0)
-const ACC_MAG_INPUT = 100
-const UP_DIR = Vector3(0, 1, 0)
-const SNAP = Vector3(0, -2, 0)
-const MAX_XZ_SPEED = 4
-const FRICTION_XZ = 10
-const FRICTION_Y = 1
+#func _physics_process(delta):
 
-# Object representing abstract player
-
-var weapon : String			# Currently equipped weapon
-var mass : float = 1		# kg
-var velocity : Vector3 = Vector3(0, 0, 0)
-var head_angle : float
-var can_jump
-
-func rotate_player(rot : Vector2):
-	# Rotate body
-	rotation_degrees.y -= ServerData.SENS_MULTIPLIER * rot.x
-	# Rotate head
-	head_angle -= ServerData.SENS_MULTIPLIER * rot.y
-	head_angle = clamp(head_angle, -80, 80)
-	$Camera.rotation_degrees.x = head_angle
-
-func get_camera():
-	return $Camera
+func save_location():
+	if player_buffer.size() > 50:
+		player_buffer.pop_back()
 	
-func check_can_jump(node):
-	return "is_jumpable_surface" in node && node.is_jumpable_surface
+	player_buffer.push_front({ "timestamp": OS.get_system_time_msecs(), "transform": self.transform })
+#
+#	for i in range(player_buffer.size()):
+#		print(str(player_buffer[i]["timestamp"]) + " => " + str(player_buffer[i]["transform"]))
+#
+#	print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
 
-func move(dir : Vector3, delta : float, jump : bool):
-	dir = dir.x * transform.basis.x + dir.y * transform.basis.y + dir.z * transform.basis.z
+func get_interpolated_location(timestamp : int):
+	var before
+	var after
+	var before_i = -1
+	var after_i = -1
 	
-	if jump && can_jump:
-		dir.y = 40
-		can_jump = false
+	var s = "["
+	for i in range(player_buffer.size()):
+		s += str(player_buffer[i]["timestamp"]) + ", "	
+	s += "]"
+	print(s)
 	
-	velocity = velocity - Vector3(velocity.x, 0, velocity.z) * FRICTION_XZ * delta
-	velocity.y = velocity.y - velocity.y * FRICTION_Y * delta
-	
-	velocity += ACC_GRAV * delta
-		
-	# TODO some kind of velocity cap
-	velocity += ACC_MAG_INPUT * dir * delta
-	if pow(velocity.x, 2) + pow(velocity.z, 2) > pow(MAX_XZ_SPEED, 2):
-		var plane_vel = Vector2(velocity.x, velocity.z).normalized() * MAX_XZ_SPEED
-		velocity.x = plane_vel.x
-		velocity.z = plane_vel.y
-	
-	var motion = velocity * delta
-	var collision = move_and_collide(motion)
-	
-	can_jump = false
-	if collision:
-		can_jump = check_can_jump(collision.get_collider())
-		if can_jump == false:
-			var parent = collision.get_collider().get_parent()
-			while(can_jump == false && parent != null):
-				can_jump = check_can_jump(parent)
-				parent = parent.get_parent()
+	for i in range(player_buffer.size()):
+		if !before && timestamp >= player_buffer[i]["timestamp"]:
+			before_i = i
+			before = player_buffer[i]
+		if !!after && timestamp < player_buffer[i]["timestamp"]:
+			after_i = i
+			after = player_buffer[i]
 			
-		# Determine vector parallel to move direction that continues the motion
-		var remainder_motion = motion.slide(collision.normal)
-		transform.origin += remainder_motion
+			
+	var before_time = null
+	if (!!before && "timestamp" in before):
+		before_time = before["timestamp"]
+	
+	var after_time = null
+	if (!!after && "timestamp" in after):
+		after_time = after["timestamp"]
 		
-		# Update velocity to match
-		velocity = velocity.slide(collision.normal)
-
+	print(str(before_time) + "(" + str(before_i) + ") => " + str(timestamp) + " => " + str(after_time) + "(" + str(after_i) + ")")
+	
+#	if before == null || after == null:
+#		return null
+#	else:
+#		return after["transform"]
+			
+			
+	

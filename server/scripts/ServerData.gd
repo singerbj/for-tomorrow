@@ -12,4 +12,3 @@ var world : Dictionary = {}
 var input_buffer : Dictionary = {}
 var packet_loss : Dictionary = {}	# player_id : {"last_packet" : int, "total_lost" : int}
 
-var SENS_MULTIPLIER : float = 0.05

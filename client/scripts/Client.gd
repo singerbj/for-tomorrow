@@ -20,7 +20,6 @@ func _ready():
 	ClientData.chat.set_name("Chat")
 	add_child(ClientData.chat)
 	
-	
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("change_mouse_mode"):
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:

@@ -23,16 +23,16 @@ func _physics_process(delta):
 		ServerData.input_buffer[pid] = []
 	
 	$DiagnosticsHandler.handle_diagnostics(buffer)
-	$InputHandler.process_client_input(buffer)
+	$InputHandler.process_client_input(delta, buffer)
 	
-#	for pid in ServerData.players.keys():
-#		print(ServerData.players[pid].transform)
+							#	for pid in ServerData.players.keys():
+							#		print(ServerData.players[pid].transform)
 
+							#func _process(delta):
 
-func _process(delta):
 	# The various process functions return information that will be passed
 	# back to the client
-	
+		
 	var tick_info = {}
 	for pid in ServerData.players.keys():
 		tick_info[pid] = {}
@@ -48,9 +48,7 @@ func _process(delta):
 					"head_angle" : ServerData.players[pid2].head_angle
 				}
 				
-		var timestamp : int = OS.get_system_time_msecs()
-				
-		rpc_unreliable_id(pid, "players_update", timestamp, pinfo_transmit)
+		rpc_unreliable_id(pid, "players_update", OS.get_system_time_msecs(), pinfo_transmit)
 		#rpc_unreliable_id(pid, "world_update", ServerData.world)		
 
 
@@ -64,6 +62,8 @@ func StartServer():
 			var bind_ip = formatted_arg_array[1]
 			network.set_bind_ip(bind_ip)
 			print("Using command line specified bind ip: " + bind_ip)
+			
+		
 		
 	get_tree().set_network_peer(network)
 	print("Server started")

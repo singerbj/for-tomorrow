@@ -21,3 +21,5 @@ func server_reconcile(new_transform):
 		self.transform.basis, new_transform.basis, 0.05,
 		Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
 	server_reconciliation_tween.start()
+#	self.transform = new_transform
+

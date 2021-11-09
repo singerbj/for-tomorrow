@@ -35,8 +35,6 @@ func process_input(delta):
 			button_list.append("fire")
 		if Input.is_action_pressed("aim"):
 			button_list.append("aim")
-		else:
-			button_list.append("unaim")
 			
 		if Input.is_action_just_released("scroll_down"):
 			button_list.append("scroll_down")
@@ -47,12 +45,14 @@ func process_input(delta):
 	if Input.is_action_just_pressed("exit"):
 		button_list.append("exit")
 		get_tree().quit()
-		
-	var input = {"Buttons" : button_list, "delta" : delta, "Motion" : ClientData.total_mouse_motion}
+	
+	var input = {"Buttons" : button_list, "delta" : delta, "timestamp": ClientData.client_clock, "Motion" : ClientData.total_mouse_motion}
 	ClientData.total_mouse_motion = Vector2(0, 0)
 	
 	var input_data = predict_input(input)
 	var input_id = push_to_input_queue(input, input_data)
+	
+#	yield(get_tree().create_timer(0.75), "timeout")
 	Server.report_input(input_id, input)
 
 
@@ -69,6 +69,8 @@ func predict_input(input : Dictionary):
 	
 	var move_vector = Vector3(0, 0, 0)
 	var jump = false
+	var fire = false
+	var aim = false
 	for button in input["Buttons"]:
 		if button in ["m_forward", "m_backward", "m_left", "m_right"]:
 			if button == "m_forward":
@@ -82,11 +84,17 @@ func predict_input(input : Dictionary):
 		elif button == "jump":
 			jump = true
 		elif button == "fire":
-			P.fire_shot()
+			fire = true	
 		elif button == "aim":
-			P.aim()
-		elif button == "unaim":
-			P.unaim()	
+			aim = true
+			
+	if aim:
+		P.aim()
+	else:
+		P.unaim()
+		
+	if fire:
+		P.fire_shot()
 			
 	move_vector = move_vector.normalized()
 	P.move(move_vector, input["delta"], jump)

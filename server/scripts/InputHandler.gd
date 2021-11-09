@@ -1,8 +1,7 @@
 extends Node
 var FRICTION_MULT = 0.1				# Multiplied with velocity for friction
 
-
-func process_client_input(buffer):
+func process_client_input(delta, buffer):
 	ShotManager.clear_shots()
 	var players_who_hit = []
 	for pid in buffer.keys():
@@ -10,11 +9,13 @@ func process_client_input(buffer):
 		var queue = buffer[pid].duplicate(true)
 		
 		var input
-		while not queue.empty():
+		while not queue.empty():			
 			input = queue.pop_front()
-			var hit = execute_client_input(pid, ServerData.players[pid], input)
+			var hit = execute_client_input(delta, pid, ServerData.players[pid], input)
 			if hit && !players_who_hit.has(pid):
 				players_who_hit.append(pid)
+		
+		ServerData.players[pid].save_location()
 		
 		if input:
 			var input_data = {}
@@ -27,12 +28,13 @@ func process_client_input(buffer):
 	for pid in ServerData.players:
 		get_node("..").send_shots(pid, ShotManager.get_shots(), players_who_hit.has(pid))
 
-func execute_client_input(pid, player, input):
+func execute_client_input(delta, pid, player, input):
 	player.rotate_player(input["Motion"])
 	
 	var move_vector = Vector3(0, 0, 0)
 	var jump = false
 	var fire = false
+	var aim = false
 	for button in input["Buttons"]:
 		if button in ["m_forward", "m_backward", "m_left", "m_right"]:
 			if button == "m_forward":
@@ -46,39 +48,16 @@ func execute_client_input(pid, player, input):
 		elif button == "jump":
 			jump = true
 		elif button == "fire":
-			fire = true				
+			fire = true		
+		elif button == "aim":
+			player.aiming = true
+			
 	move_vector = move_vector.normalized()
 	
-	player.move(move_vector, input["delta"], jump)
+	player.move(move_vector, input["delta"], jump)	
 		
 	if fire:
-		return ShotManager.fire_shot(pid, player)
+		return ShotManager.fire_shot(pid, player, input["timestamp"])
 	else:
 		return false
 	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
