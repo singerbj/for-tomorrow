@@ -34,7 +34,12 @@ func fire_shot(pid, player, timestamp):
 		for other_pid in ServerData.players:
 			if pid != other_pid:			
 				ServerData.players[other_pid].get_interpolated_location(timestamp)				
+		print(str(timestamp) + " ~ " + str(now))
+		if timestamp - now >= 0:
+			print("====> CLIENT IS AHEAD WTF... by " + str(timestamp - now) + " ms")
 		print("%%%%%%%%%%%%%%%%%%%%%%%%")
+		print("")
+		print("")
 		
 		player_last_shots[pid] = now
 		var from = player.get_camera().project_ray_origin(Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2))

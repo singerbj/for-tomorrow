@@ -12,7 +12,7 @@ var prediction_errors = 0
 var total_mouse_motion : Vector2 = Vector2(0, 0)	# aggregate mouse movement between frames
 
 # How many seconds "behind the received information" the client is
-var interp_time_ms : float = 50	# 50ms
+const interpolation_offset : int = 100	# 100ms
 
 # How long to keep extrapolating player movements after not receiving data anymore
 #var max_extrapolation_time_ms : float = 500 # 500ms

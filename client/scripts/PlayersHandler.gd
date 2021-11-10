@@ -30,11 +30,13 @@ func process_other_players(delta):
 	# var prev_state = null 	# Only relevant in extrapolation case
 	var begin_state = null
 	var end_state = null
+	
+	var render_time = ClientData.client_clock - ClientData.interpolation_offset
 
 	# Find state immediately before client time
 	var obsolete_states = -1
 	for i in range(ClientData.player_buffer.size()):
-		if ClientData.player_buffer[i]["timestamp"] < ClientData.client_clock:
+		if ClientData.player_buffer[i]["timestamp"] < render_time:
 			obsolete_states += 1
 			begin_state = ClientData.player_buffer[i]
 		else:
@@ -42,7 +44,7 @@ func process_other_players(delta):
 			
 	# Find state immediately ahead of client time
 	for i in range(ClientData.player_buffer.size()-1, -1, -1): # Iterate to -1 to include index 0...
-		if ClientData.player_buffer[i]["timestamp"] > ClientData.client_clock:
+		if ClientData.player_buffer[i]["timestamp"] > render_time:
 			end_state = ClientData.player_buffer[i]
 		else:
 			break
@@ -63,7 +65,7 @@ func process_other_players(delta):
 	elif begin_state == null and end_state != null:
 		new_state = end_state["player_info"]
 	elif begin_state != null and end_state != null:
-		new_state = interpolate_players_state(begin_state, end_state, ClientData.client_time)
+		new_state = interpolate_players_state(begin_state, end_state, render_time)
 		
 	update_players(new_state)
 	

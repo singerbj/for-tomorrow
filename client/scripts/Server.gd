@@ -44,9 +44,9 @@ func _physics_process(delta):
 	ClientData.client_clock += int(delta * 1000) + ClientData.delta_latency
 	ClientData.delta_latency = 0
 	ClientData.decimal_collector += (delta * 1000) - int(delta * 1000)
-	if ClientData.decimal_collector >- 1.00:
+	if ClientData.decimal_collector >= 1.00:
 		ClientData.client_clock += 1
-		ClientData.decimal_collector =- 1.00
+		ClientData.decimal_collector -= 1.00
 
 func _on_join_signal(ip_address, player_name):
 	print("Joining game at " +  ip_address + " with player name: " + player_name)
@@ -76,7 +76,7 @@ func _on_connection_succeeded():
 	print("Connected Successfully")
 	rpc_id(1, "fetch_server_time", OS.get_system_time_msecs())
 	var timer = Timer.new()
-	timer.wait_time = 0.5
+	timer.wait_time = 0.25 #TODO: do this less often, 0.5 was the tutorial value
 	timer.autostart = true
 	timer.connect("timeout", self, "_determine_latency")
 	self.add_child(timer)
@@ -101,8 +101,8 @@ remote func return_latency(client_time):
 				total_latency += ClientData.latency_array[i]
 		ClientData.delta_latency = (total_latency/ ClientData.latency_array.size()) - ClientData.latency
 		ClientData.latency = total_latency / ClientData.latency_array.size()
-		print("New Latency", ClientData.latency)
-		print("Delta Latency", ClientData.delta_latency)
+		print("New Latency ", ClientData.latency)
+		print("Delta Latency ", ClientData.delta_latency)
 		ClientData.latency_array.clear()
 			
 
@@ -111,7 +111,7 @@ remote func confirm_connection(connect_info):
 	
 	
 remote func players_update(timestamp, other_players):
-#	print("====> ", timestamp, " ~ ", ClientData.client_clock)	
+#	print("====> ", timestamp, " ~ ", ClientData.client_clock, " (" + str((ClientData.client_clock - timestamp)) + ")")	
 	get_node("../Client/PlayersHandler").push_players_update(timestamp, other_players)
 
 

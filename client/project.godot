@@ -24,7 +24,6 @@ config/icon="res://icon.png"
 Server="*res://scripts/Server.gd"
 ClientData="*res://scripts/ClientData.gd"
 Utility="*res://scripts/Utility.gd"
-DrawLine3d="*res://scripts/DrawLine3d.gd"
 SharedData="*res://shared/scripts/SharedData.gd"
 
 [input]

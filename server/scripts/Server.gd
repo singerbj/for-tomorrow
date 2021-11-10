@@ -21,15 +21,15 @@ func _physics_process(delta):
 	var buffer = ServerData.input_buffer.duplicate(true)
 	for pid in ServerData.input_buffer.keys():
 		ServerData.input_buffer[pid] = []
+		ServerData.players[pid].save_location()
 	
 	$DiagnosticsHandler.handle_diagnostics(buffer)
 	$InputHandler.process_client_input(delta, buffer)
 	
-							#	for pid in ServerData.players.keys():
-							#		print(ServerData.players[pid].transform)
+	#	for pid in ServerData.players.keys():
+	#		print(ServerData.players[pid].transform)
 
-							#func _process(delta):
-
+func _process(delta):
 	# The various process functions return information that will be passed
 	# back to the client
 		
