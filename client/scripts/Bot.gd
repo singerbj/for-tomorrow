@@ -14,11 +14,11 @@ func set_head_angle(angle):
 func server_reconcile(new_transform):
 	server_reconciliation_tween.interpolate_property(
 		self, "translation", 
-		self.transform.origin, new_transform.origin, 0.05,
+		self.transform.origin, new_transform.origin, 0.045,
 		Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
 	server_reconciliation_tween.interpolate_property(
 		self, "transform:basis", 
-		self.transform.basis, new_transform.basis, 0.05,
+		self.transform.basis, new_transform.basis, 0.045,
 		Tween.TRANS_LINEAR, Tween.EASE_OUT_IN)
 	server_reconciliation_tween.start()
 #	self.transform = new_transform

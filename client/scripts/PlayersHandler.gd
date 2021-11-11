@@ -31,7 +31,7 @@ func process_other_players(delta):
 	var begin_state = null
 	var end_state = null
 	
-	var render_time = ClientData.client_clock - ClientData.interpolation_offset
+	var render_time = ClientData.client_clock #- SharedData.INTERPOLATION_OFFSET
 
 	# Find state immediately before client time
 	var obsolete_states = -1
@@ -43,7 +43,7 @@ func process_other_players(delta):
 			break
 			
 	# Find state immediately ahead of client time
-	for i in range(ClientData.player_buffer.size()-1, -1, -1): # Iterate to -1 to include index 0...
+	for i in range(ClientData.player_buffer.size() - 1, -1, -1): # Iterate to -1 to include index 0...
 		if ClientData.player_buffer[i]["timestamp"] > render_time:
 			end_state = ClientData.player_buffer[i]
 		else:

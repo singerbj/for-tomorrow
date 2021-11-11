@@ -1,6 +1,7 @@
 extends "res://shared/scripts/BasePlayer.gd"
 
 var player_buffer = []
+var stashed_transform = null
 
 #func _physics_process(delta):
 #	save_location()
@@ -15,6 +16,17 @@ func save_location():
 #		print(str(player_buffer[i]["timestamp"]) + " => " + str(player_buffer[i]["transform"]))
 #
 #	print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+
+func stash_current_transform():
+	self.stashed_transform = self.transform
+	
+func revert_to_stashed_transform():
+	self.transform = self.stashed_transform
+	self.stashed_transform = null
+
+func move_to_interpolated_location(timestamp : int):
+	var interpolated_transform = get_interpolated_location(timestamp)
+	self.transform = interpolated_transform
 
 func get_interpolated_location(timestamp : int):
 	var before
@@ -60,18 +72,16 @@ func get_interpolated_location(timestamp : int):
 		var interpolated_transform = before["transform"].interpolate_with(after["transform"], interpolated_timestamp)
 				
 		if before:
-			print("Before:       ", before_time, " -> ", before["transform"])	
+			print("Before:       ", before_i, " ~ ", before_time, " -> ", before["transform"])	
 			
-		print("Interpolated: ", timestamp, " -> ", interpolated_transform)
+		print("Interpolated: ", "-", " ~ ", timestamp, " -> ", interpolated_transform)
 		
 		if after:
-			print("After:        ", after_time, " -> ", after["transform"])
-			
-		return interpolated_transform
+			print("After:        ", after_i, " ~ ", after_time, " -> ", after["transform"])
+				
+		print("========================================================")
+		print("")
 		
-	#	if before == null || after == null:
-	#		return null
-	#	else:
-	#		return after["transform"]
+		return interpolated_transform
 		
 	

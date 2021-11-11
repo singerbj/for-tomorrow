@@ -2,6 +2,7 @@ extends Node
 var FRICTION_MULT = 0.1				# Multiplied with velocity for friction
 
 func process_client_input(delta, buffer):
+	# process movement input
 	for pid in buffer.keys():
 		# deep copy to not modify original buffer object
 		var queue = buffer[pid].duplicate(true)
@@ -18,22 +19,18 @@ func process_client_input(delta, buffer):
 			input_data["head_angle"] = ServerData.players[pid].head_angle
 			# input in this case refers to the last input out of the while loop
 			get_node("..").send_input(pid, input, input_data)
-		
-	ShotManager.clear_shots()
-	var players_who_hit = []
+	
+	# process shooting input	
+	var shots_to_process = []
 	for pid in buffer.keys():	
-		var second_queue = buffer[pid].duplicate(true)
-		var second_input
-		while !second_queue.empty():			
-			second_input = second_queue.pop_front()
-			var hit = execute_client_shot(delta, pid, ServerData.players[pid], second_input)
-			if hit && !players_who_hit.has(pid):
-				players_who_hit.append(pid)
-		
-		
-			
-	for pid in ServerData.players:
-		get_node("..").send_shots(pid, ShotManager.get_shots(), players_who_hit.has(pid))
+		var queue = buffer[pid].duplicate(true)
+		var input
+		while !queue.empty():			
+			input = queue.pop_front()
+			if input["Buttons"].has("fire"):
+				shots_to_process.push_back({ "pid": pid, "input": input })
+				
+	process_client_shots(shots_to_process)
 
 func execute_client_input(delta, pid, player, input):
 	player.rotate_player(input["Motion"])
@@ -61,14 +58,9 @@ func execute_client_input(delta, pid, player, input):
 	
 	player.move(move_vector, input["delta"], jump)	
 		
-func execute_client_shot(delta, pid, player, input):
-	var fire = false
-	for button in input["Buttons"]:
-		if button == "fire":
-			fire = true
-			break		
-			
-	if fire:
-		return ShotManager.fire_shot(pid, player, input["timestamp"])
-	else:
-		return false	
+func process_client_shots(shots_to_fire):
+	var players_who_hit = ShotManager.fire_shots(shots_to_fire)
+		
+#	print(players_who_hit)
+	for pid in ServerData.players:
+		get_node("..").send_shots(pid, ShotManager.get_shots(), players_who_hit.has(pid))
