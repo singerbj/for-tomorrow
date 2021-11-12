@@ -184,9 +184,10 @@ func recieve_input(input : Dictionary, server_input_data : Dictionary):
 		return
 	else:
 		ClientData.prediction_errors += 1
-		print("Prediction error in input ", input_id, " (match ", input_queue_data["input_id"], ") for '" + source + "', Error rate ",
-			100 * ClientData.prediction_errors / float(ClientData.input_counter), "%, Total: ", ClientData.prediction_errors,
-			", Inputs in queue: ", len(ClientData.input_queue))
+		# TODO: turn this back on or track it better?
+#		print("Prediction error in input ", input_id, " (match ", input_queue_data["input_id"], ") for '" + source + "', Error rate ",
+#			100 * ClientData.prediction_errors / float(ClientData.input_counter), "%, Total: ", ClientData.prediction_errors,
+#			", Inputs in queue: ", len(ClientData.input_queue))
 		get_node("../Player").transform = Utility.transform_from_array(server_input_data["transform"])
 		get_node("../Player").velocity = Utility.vec3_from_array(server_input_data["velocity"])
 		get_node("../Player").head_angle = server_input_data["head_angle"]
@@ -196,9 +197,6 @@ func recieve_input(input : Dictionary, server_input_data : Dictionary):
 			var corrected_input_data = predict_input(ClientData.input_queue[i]["input"])
 			ClientData.input_queue[i]["input_data"] = corrected_input_data
 
-	
-	
-	
 	
 # TODO: use the shot manager for this or something
 var ray_length = 1000
