@@ -2,26 +2,37 @@ extends KinematicBody
 
 export var is_player = true;
 
-# Forces
-const ACC_GRAV = Vector3(0, -100, 0)
-const ACC_MAG_INPUT = 100
-const UP_DIR = Vector3(0, 1, 0)
-const SNAP = Vector3(0, -2, 0)
-const MAX_XZ_SPEED = 4
-const FRICTION_XZ = 10
-const FRICTION_Y = 1
+enum State { IDLE, WALKING, SPRINTING, JUMPING, FALLING }
 
-# Object representing abstract player
+const ACCELERATION = 0.5
+const MOVE_SPEED = 10
+#const SPRINT_SPEED = 14
+const MOVE_FRICTION = 1.15
+const FALL_FRICTION = 1
+const MAX_CLIMB_ANGLE = 0.6
+const ANGLE_OF_FREEDOM = 80
+const JUMP_SPEED = 45
+
+var state = State.FALLING
+var on_floor = false
+#var crouching = false
+#var crouch_floor = false #true if started crouching on the floor
+var collision : KinematicCollision  # Stores the collision from move_and_collide
+var velocity := Vector3(0, 0, 0)
+
+var head_angle : float
+var aiming = false
+var ads_tween
+
+var raycast_node
 
 var weapon : String	= "gun"		# Currently equipped weapon
 var weapon_list := ["gun"]
 
-var velocity : Vector3 = Vector3(0, 0, 0)
-var head_angle : float
-var can_jump = false
-
-var aiming = false
-var ads_tween
+#func _ready():
+#	raycast_node = RayCast.new()
+#	raycast_node.cast_to(Vector3(0, -0.1, 0))
+#	self.add_child(raycast_node)
 
 func rotate_player(rot : Vector2):
 	# Rotate body
@@ -34,44 +45,65 @@ func rotate_player(rot : Vector2):
 func get_camera():
 	return $Camera
 	
-func check_can_jump(node):
-	return "is_jumpable_surface" in node && node.is_jumpable_surface
+func move(input_dir : Vector3, delta : float, jump : bool):
+	if jump && on_floor && state != State.FALLING:
+		state = State.JUMPING
+	
+	# state management
+	if !collision:
+		on_floor = false
+		if state != State.JUMPING:
+			state = State.FALLING
+	else:
+		if state == State.JUMPING:
+			pass
+		elif Vector3.UP.dot(collision.normal) < MAX_CLIMB_ANGLE:
+			state = State.FALLING
+		else:
+			on_floor = true
+			if input_dir.length() > .1: 
+				state = State.WALKING
+			else:
+				state = State.IDLE
+	
+	#jump state
+	if state == State.JUMPING:
+		velocity.y = JUMP_SPEED
+		state = State.FALLING
 
-func move(dir : Vector3, delta : float, jump : bool):
-	dir = dir.x * transform.basis.x + dir.y * transform.basis.y + dir.z * transform.basis.z
+	#fall state
+	if state == State.FALLING:
+		if velocity.y > SharedData.GRAVITY:
+			velocity.y += SharedData.GRAVITY * delta * 4
 	
-	if jump && can_jump:
-		dir.y = 40
-		can_jump = false
-	
-	velocity = velocity - Vector3(velocity.x, 0, velocity.z) * FRICTION_XZ * delta
-	velocity.y = velocity.y - velocity.y * FRICTION_Y * delta
-	
-	velocity += ACC_GRAV * delta
+	#run state
+	if state == State.WALKING:
+		velocity += input_dir.rotated(Vector3(0, 1, 0), rotation.y) * ACCELERATION
+		if Vector2(velocity.x, velocity.z).length() > MOVE_SPEED: 
+			velocity = velocity.normalized() * MOVE_SPEED
+			velocity.y = ((Vector3(velocity.x, 0, velocity.z).dot(collision.normal)) * -1)
 		
-	# TODO some kind of velocity cap
-	velocity += ACC_MAG_INPUT * dir * delta
-	if pow(velocity.x, 2) + pow(velocity.z, 2) > pow(MAX_XZ_SPEED, 2):
-		var plane_vel = Vector2(velocity.x, velocity.z).normalized() * MAX_XZ_SPEED
-		velocity.x = plane_vel.x
-		velocity.z = plane_vel.y
-	
-	var motion = velocity * delta
-	var collision = move_and_collide(motion)
-	
-	can_jump = false
+		# fake gravity to keep character on the ground
+		# increase if player is falling down slopes instead of WALKING
+		velocity.y -= .0001 + (int(velocity.y < 0) * 1.1)  
+		
+
+	#idle state
+	if state == State.IDLE: 
+		if velocity.length() > .5:
+			velocity /= MOVE_FRICTION
+			velocity.y = ((Vector3(velocity.x, 0, velocity.z).dot(collision.normal)) * -1) - .0001
+
+	#apply
+	if velocity.length() >= .5: # || inbetween:
+		collision = move_and_collide(velocity * delta)
+	else:
+		velocity = Vector3(0, velocity.y, 0)
 	if collision:
-		can_jump = check_can_jump(collision.get_collider())
-		if can_jump == false:
-			var parent = collision.get_collider().get_parent()
-			while(can_jump == false && parent != null):
-				can_jump = check_can_jump(parent)
-				parent = parent.get_parent()
-			
-		# Determine vector parallel to move direction that continues the motion
-		var remainder_motion = motion.slide(collision.normal)
-		transform.origin += remainder_motion
-		
-		# Update velocity to match
-		velocity = velocity.slide(collision.normal)
+		if Vector3.UP.dot(collision.normal) < .5:
+			velocity.y += delta * SharedData.GRAVITY
+			velocity.y = clamp(velocity.y, SharedData.GRAVITY, 9999)
+			velocity = velocity.slide(collision.normal).normalized() * velocity.length()
+		else:
+			velocity = velocity
 

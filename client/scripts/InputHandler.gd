@@ -23,7 +23,7 @@ func process_input(delta):
 	if !ClientData.chat.is_open:
 		if Input.is_action_pressed("m_forward"):
 			button_list.append("m_forward")
-		if true || Input.is_action_pressed("m_backward"):
+		if Input.is_action_pressed("m_backward"):
 			button_list.append("m_backward")
 		if Input.is_action_pressed("m_left"):
 			button_list.append("m_left")

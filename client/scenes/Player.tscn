@@ -25,10 +25,6 @@ far = 500.0
 [node name="Gun" parent="Camera" instance=ExtResource( 5 )]
 transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0.06, -0.06, -0.2 )
 
-[node name="RayCast" type="RayCast" parent="."]
-enabled = true
-cast_to = Vector3( 0, 0, -10 )
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Control" type="Control" parent="CanvasLayer"]
@@ -79,6 +75,16 @@ margin_left = -502.0
 margin_top = -292.0
 margin_right = -363.0
 margin_bottom = -278.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="State" type="Label" parent="CanvasLayer/Control"]
+margin_left = -503.0
+margin_top = -273.0
+margin_right = -364.0
+margin_bottom = -259.0
+text = "STATE: "
 __meta__ = {
 "_edit_use_anchors_": false
 }
