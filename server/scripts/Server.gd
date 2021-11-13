@@ -5,7 +5,8 @@ var Player = preload("res://scenes/Player.tscn")
 var Level = preload("res://shared/scenes/ArenaTest2.tscn")
 
 func _ready():
-	
+	OS.set_current_screen(0)
+	OS.set_window_fullscreen(true)
 	var level = Level.instance()
 	level.name = "Level"
 	add_child(level)
@@ -16,7 +17,7 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 	
-func _physics_process(delta):
+func _physics_process(delta):		
 	# deep copy to capture buffer at this moment in time
 	var buffer = ServerData.input_buffer.duplicate(true)
 	for pid in ServerData.input_buffer.keys():
@@ -29,7 +30,7 @@ func _physics_process(delta):
 	#	for pid in ServerData.players.keys():
 	#		print(ServerData.players[pid].transform)
 
-func _process(delta):
+#func _process(delta):	
 	# The various process functions return information that will be passed
 	# back to the client
 		
@@ -120,8 +121,8 @@ func _send_message(msg : String, usr : String, chat_mode : String = "normal", co
 func send_input(pid, input : Dictionary, input_data : Dictionary):
 	rpc_unreliable_id(pid, "recieve_input", input, input_data)
 	
-func send_shots(pid, shots : Array, hit : bool):
-	rpc_unreliable_id(pid, "recieve_shots", shots, hit)
+func send_shots(pid, shots : Array, hit : bool, player_locations : Array):
+	rpc_unreliable_id(pid, "recieve_shots", shots, hit, player_locations)
 
 
 

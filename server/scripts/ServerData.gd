@@ -11,4 +11,3 @@ var world : Dictionary = {}
 # of Dictionaries (Input states - buttons, motions, input id
 var input_buffer : Dictionary = {}
 var packet_loss : Dictionary = {}	# player_id : {"last_packet" : int, "total_lost" : int}
-

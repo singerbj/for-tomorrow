@@ -10,6 +10,7 @@ func _ready() -> void:
 	add_child(ads_tween)
 
 func _process(delta):
+	$Camera.make_current()
 	$CanvasLayer/Control/Label2.set_text(str(Engine.get_frames_per_second()))
 	
 func _physics_process(delta):
@@ -70,24 +71,28 @@ func unaim():
 			Tween.TRANS_QUAD, Tween.EASE_IN)		
 		ads_tween.start()
 	
+var player_last_shot = 0
 func fire_shot():
 	pass
-#	var from = $Camera.project_ray_origin(get_viewport().get_mouse_position())
-#	var to = from + $Camera.project_ray_normal(get_viewport().get_mouse_position()) * ray_length
+#	var now = OS.get_system_time_msecs()
+#	if (now - 100) > player_last_shot:
+#		player_last_shot = now
+#		var from = $Camera.project_ray_origin(get_viewport().get_mouse_position())
+#		var to = from + $Camera.project_ray_normal(get_viewport().get_mouse_position()) * 10000
 #
-#	var color = Color(0.5, 0.5, 0.5)
+#		var color = Color(0.5, 0.5, 0.5)
 #
-#	var line = ImmediateGeometry.new()
-#	var mat = SpatialMaterial.new()
-#	mat.flags_unshaded = true
-#	mat.vertex_color_use_as_albedo = true
-#	line.material_override = mat
+#		var line = ImmediateGeometry.new()
+#		var mat = SpatialMaterial.new()
+#		mat.flags_unshaded = true
+#		mat.vertex_color_use_as_albedo = true
+#		line.material_override = mat
 #
-#	get_node('/root').add_child(line)
-#	line.clear()
-#	line.begin(Mesh.PRIMITIVE_LINE_STRIP)
-#	line.set_color(color)
-#	line.add_vertex(from)
-#	line.add_vertex(to)
-#	line.end()
+#		get_node('/root').add_child(line)
+#		line.clear()
+#		line.begin(Mesh.PRIMITIVE_LINE_STRIP)
+#		line.set_color(color)
+#		line.add_vertex(from)
+#		line.add_vertex(to)
+#		line.end()
 	

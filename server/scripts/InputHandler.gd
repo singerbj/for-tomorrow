@@ -59,8 +59,11 @@ func execute_client_input(delta, pid, player, input):
 	player.move(move_vector, input["delta"], jump)	
 		
 func process_client_shots(shots_to_fire):
-	var players_who_hit = ShotManager.fire_shots(shots_to_fire)
-		
-#	print(players_who_hit)
-	for pid in ServerData.players:
-		get_node("..").send_shots(pid, ShotManager.get_shots(), players_who_hit.has(pid))
+	if(shots_to_fire.size() > 0):
+		var result = ShotManager.fire_shots(shots_to_fire)
+		var players_who_hit = result[0]
+		var player_locations = result[1]
+			
+	#	print(players_who_hit)
+		for pid in ServerData.players:
+			get_node("..").send_shots(pid, ShotManager.get_shots(), players_who_hit.has(pid), player_locations)

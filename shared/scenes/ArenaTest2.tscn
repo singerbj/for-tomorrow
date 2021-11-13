@@ -36,3 +36,8 @@ light_indirect_energy = 15.04
 light_negative = true
 omni_range = 40.0
 omni_attenuation = 3.73214
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1.33333, 0, 0, 0, -2.17228e-07, 1.33333, 0, -1.33333, -2.17228e-07, 0, 150, 0 )
+near = 0.01
+far = 8192.0

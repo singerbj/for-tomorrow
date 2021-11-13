@@ -1,19 +1,5 @@
 extends Node
 
-var lines
-var time = 0
-
-func _ready() -> void:
-	lines = []
-	
-func _physics_process(delta):
-	time += delta;
-	if time > 0.25:
-		for line in lines:
-			line.queue_free()
-		lines = []
-		time = 0
-	
 func _input(event) -> void:
 	if event is InputEventMouseMotion && Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
 		ClientData.total_mouse_motion += event.relative
@@ -23,7 +9,7 @@ func process_input(delta):
 	if !ClientData.chat.is_open:
 		if Input.is_action_pressed("m_forward"):
 			button_list.append("m_forward")
-		if true || Input.is_action_pressed("m_backward"):
+		if !Input.is_action_pressed("aim") || Input.is_action_pressed("m_backward"):
 			button_list.append("m_backward")
 		if Input.is_action_pressed("m_left"):
 			button_list.append("m_left")
@@ -112,15 +98,17 @@ func push_to_input_queue(input : Dictionary, input_data) -> int:
 	# along with an id, which it assigns. The ID is returned. This ID
 	# will later be used to match it with the answer from the server for
 	# verification
-	var time = ClientData.client_clock
 	ClientData.input_counter += 1
-	ClientData.input_queue.push_back({"input_id" : ClientData.input_counter, "input" : input, "input_data" : input_data, "timestamp" : time})
+	ClientData.input_queue.push_back({"input_id" : ClientData.input_counter, "input" : input, "input_data" : input_data, "timestamp" : ClientData.client_clock })
 	return ClientData.input_counter
 	
-func recieve_shots(shots : Array, hit : bool):
+func recieve_shots(shots : Array, hit : bool, player_locations : Array):
 	#TODO move this to shot manager at some point
 	for shot in shots:
-		fire_shot(shot.from, shot.to, shot.color)
+		LineDrawer.draw_line(shot.from, shot.to, shot.color)
+	
+	for location in player_locations:
+		LineDrawer.draw_line(location, Vector3(location.x, location.y + 4, location.z), Color(0, 1, 0))
 		
 	#TODO show hitmarker if player got a hit
 	var P = get_node("../Player")
@@ -196,25 +184,6 @@ func recieve_input(input : Dictionary, server_input_data : Dictionary):
 		for i in range(len(ClientData.input_queue)):
 			var corrected_input_data = predict_input(ClientData.input_queue[i]["input"])
 			ClientData.input_queue[i]["input_data"] = corrected_input_data
-
-	
-# TODO: use the shot manager for this or something
-var ray_length = 1000
-func fire_shot(from, to, color):
-	var line = ImmediateGeometry.new()
-	var mat = SpatialMaterial.new()
-	mat.flags_unshaded = true
-	mat.vertex_color_use_as_albedo = true
-	line.material_override = mat
-	
-	get_node('/root').add_child(line)
-	line.clear()
-	line.begin(Mesh.PRIMITIVE_LINE_STRIP)
-	line.set_color(color)
-	line.add_vertex(from)
-	line.add_vertex(to)
-	line.end()
-	lines.append(line)
 
 
 #func legacy_predict_client_input(input) -> Array:

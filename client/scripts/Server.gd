@@ -95,7 +95,7 @@ remote func return_latency(client_time):
 		ClientData.latency_array.sort()
 		var mid_point = ClientData.latency_array[4]
 		for i in range(ClientData.latency_array.size() - 1, -1, -1):
-			if ClientData.latency_array[i] > (2 * mid_point) && ClientData.latency_array[i] > 20:
+			if ClientData.latency_array[i] > (2 * mid_point) && ClientData.latency_array[i] > 0:
 				ClientData.latency_array.remove(i)
 			else:
 				total_latency += ClientData.latency_array[i]
@@ -134,8 +134,8 @@ remote func report_diagnostics(diagnostics : Dictionary):
 remote func recieve_input(input : Dictionary, input_data : Dictionary):
 	get_node("../Client/InputHandler").recieve_input(input, input_data)
 
-remote func recieve_shots(shots : Array, hit : bool):
-	get_node("../Client/InputHandler").recieve_shots(shots, hit)
+remote func recieve_shots(shots : Array, hit : bool, player_locations : Array):
+	get_node("../Client/InputHandler").recieve_shots(shots, hit, player_locations)
 
 func _send_message(msg: String, mode: String) -> void:
 	rpc_id(1, "_receive_message", msg, mode)

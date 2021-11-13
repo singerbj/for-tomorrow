@@ -32,8 +32,6 @@ func process_other_players(delta):
 		if ClientData.player_buffer.size() > 2: # we have a future state			
 			var interpolation_factor = float(render_time - ClientData.player_buffer[1]["timestamp"]) / float(ClientData.player_buffer[2]["timestamp"] - ClientData.player_buffer[1]["timestamp"])
 			for pid in ClientData.player_buffer[2]["player_info"].keys():
-				if pid == get_tree().get_network_unique_id():
-					continue
 				if !ClientData.player_buffer[1]["player_info"].has(pid):
 					continue
 				if get_node_or_null(str(pid)):
@@ -50,18 +48,18 @@ func process_other_players(delta):
 		elif render_time > ClientData.player_buffer[1]["timestamp"]: # We have no future world state, so extrapolate
 			var extrapolation_factor = (float(render_time - ClientData.player_buffer[0]["timestamp"]) / float(ClientData.player_buffer[1]["timestamp"] - ClientData.player_buffer[0]["timestamp"])) - 1
 			for pid in ClientData.player_buffer[1]["player_info"].keys():
-				if pid == get_tree().get_network_unique_id():
-					continue
 				if !ClientData.player_buffer[0]["player_info"].has(pid):
 					continue
 				if get_node_or_null(str(pid)):
-					print("THIS IS BROKEN") # TODO: This is broken
-					var transform_delta = (ClientData.player_buffer[1]["player_info"][pid]["transform"] - ClientData.player_buffer[0]["player_info"][pid]["transform"])
-					var new_transform = ClientData.player_buffer[1]["player_info"][pid]["transform"] + (transform_delta * extrapolation_factor)
-					var new_head_angle = ClientData.player_buffer[1]["player_info"][pid]["head_angle"] + (transform_delta * extrapolation_factor)
+#					print("THIS IS BROKEN") # TODO: This is broken
+#					var transform_delta = (ClientData.player_buffer[1]["player_info"][pid]["transform"].basis - ClientData.player_buffer[0]["player_info"][pid]["transform"].basis)
+#					var new_transform = ClientData.player_buffer[1]["player_info"][pid]["transform"] + (transform_delta * extrapolation_factor)
+#					var new_head_angle = ClientData.player_buffer[1]["player_info"][pid]["head_angle"] + (transform_delta * extrapolation_factor)
+#					var player_node = get_node(str(pid))
+#					player_node.server_reconcile(new_transform)
+#					player_node.server_recoset_head_angle(new_head_angle)
 					var player_node = get_node(str(pid))
-					player_node.server_reconcile(new_transform)
-					player_node.server_recoset_head_anglencile(new_head_angle)
+					player_node.server_reconcile(ClientData.player_buffer[0]["player_info"][pid]["transform"])
 				
 				
 			

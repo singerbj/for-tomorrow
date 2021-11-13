@@ -1,6 +1,6 @@
 extends KinematicBody
 
-export var is_player = true;
+var is_player = true;
 
 # Forces
 const ACC_GRAV = Vector3(0, -100, 0)
