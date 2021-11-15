@@ -1,5 +1,7 @@
 extends "res://shared/scripts/BasePlayer.gd"
 
+const CAM_ACCEL = 40
+
 func _ready() -> void:
 	$CanvasLayer/Control/Label.text = weapon
 	$CanvasLayer/Control/Hitmarker.set("modulate", Color(1, 1, 1, 0))
@@ -12,6 +14,15 @@ func _ready() -> void:
 func _process(delta):
 	$CanvasLayer/Control/Label2.set_text(str(Engine.get_frames_per_second()))
 	$CanvasLayer/Control/State.text = "State:" + str(self.State.keys()[self.state])
+	
+	#camera physics interpolation to reduce physics jitter on high refresh-rate monitors
+	var desired_cam_location = Vector3(self.global_transform.origin.x, self.global_transform.origin.y + 2.6, self.global_transform.origin.z)
+	if Engine.get_frames_per_second() > Engine.iterations_per_second:
+		$Camera.set_as_toplevel(true)
+		$Camera.global_transform.origin = $Camera.global_transform.origin.linear_interpolate(desired_cam_location, CAM_ACCEL * delta)
+		$Camera.rotation.y = rotation.y
+	else:
+		$Camera.set_as_toplevel(false)
 	
 func _physics_process(delta):
 	var alpha = $CanvasLayer/Control/Hitmarker.get("modulate").a

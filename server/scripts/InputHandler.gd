@@ -56,7 +56,8 @@ func execute_client_input(delta, pid, player, input):
 			
 	move_vector = move_vector.normalized()
 	
-	player.move(move_vector, input["delta"], jump)	
+	player.set_input_values(move_vector, jump)
+#	player.move(move_vector, input["delta"], jump)	
 		
 func process_client_shots(shots_to_fire):
 	var players_who_hit = ShotManager.fire_shots(shots_to_fire)
