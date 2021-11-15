@@ -1,5 +1,6 @@
 extends "res://shared/scripts/BasePlayer.gd"
 
+const CAM_ACCEL = 40
 
 func _ready() -> void:
 	$CanvasLayer/Control/Label.text = weapon
@@ -9,9 +10,20 @@ func _ready() -> void:
 	ads_tween = Tween.new()
 	add_child(ads_tween)
 
+
 func _process(delta):
 	$Camera.make_current()
 	$CanvasLayer/Control/Label2.set_text(str(Engine.get_frames_per_second()))
+	$CanvasLayer/Control/State.text = "State:" + str(self.State.keys()[self.state])
+	
+	#camera physics interpolation to reduce physics jitter on high refresh-rate monitors
+	var desired_cam_location = Vector3(self.global_transform.origin.x, self.global_transform.origin.y + 2.6, self.global_transform.origin.z)
+	if Engine.get_frames_per_second() > Engine.iterations_per_second:
+		$Camera.set_as_toplevel(true)
+		$Camera.global_transform.origin = $Camera.global_transform.origin.linear_interpolate(desired_cam_location, CAM_ACCEL * delta)
+		$Camera.rotation.y = rotation.y
+	else:
+		$Camera.set_as_toplevel(false)
 	
 func _physics_process(delta):
 	var alpha = $CanvasLayer/Control/Hitmarker.get("modulate").a
@@ -22,16 +34,6 @@ func set_up(connect_info : Dictionary):
 	transform = Utility.transform_from_array(connect_info["transform"])
 	velocity = Utility.vec3_from_array(connect_info["velocity"])
 
-func construct(block_id):
-	var c = $RayCast.get_collider()
-	var target : Vector3
-	if c is GridMap:
-		var pos : Vector3 = $RayCast.get_collision_point()
-		var normal : Vector3 = $RayCast.get_collision_normal()
-		target = c.world_to_map(pos + normal * 0.5)
-		#c.set_cell_item(target.x, target.y, target.z, 0)
-	Server.construct(target, block_id)
-	
 	
 func show_hitmarker():
 	$CanvasLayer/Control/Hitmarker.set("modulate", Color(1, 1, 1, 1))
