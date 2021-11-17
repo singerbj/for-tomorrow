@@ -16,7 +16,13 @@ func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 	
-func _physics_process(delta):
+#func _physics_process(delta):
+	
+	
+	#	for pid in ServerData.players.keys():
+	#		print(ServerData.players[pid].transform)
+
+func _process(delta):
 	# deep copy to capture buffer at this moment in time
 	var buffer = ServerData.input_buffer.duplicate(true)
 	for pid in ServerData.input_buffer.keys():
@@ -26,10 +32,6 @@ func _physics_process(delta):
 	$DiagnosticsHandler.handle_diagnostics(buffer)
 	$InputHandler.process_client_input(delta, buffer)
 	
-	#	for pid in ServerData.players.keys():
-	#		print(ServerData.players[pid].transform)
-
-func _process(delta):
 	# The various process functions return information that will be passed
 	# back to the client
 		

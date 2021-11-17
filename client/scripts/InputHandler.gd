@@ -167,16 +167,10 @@ func recieve_input(input : Dictionary, server_input_data : Dictionary):
 	var source = ""
 
 	for key in server_input_data.keys():
-#		if key == "head_angle": # TODO: remove this?
-#			if abs(local_input_data[key] - server_input_data[key]) > ClientData.EPSILON:
-#				diff = true
-#				break
-#			else:
-#				continue
-		
 		if key != "head_angle": # TODO: remove this?
 			for i in range(len(local_input_data[key])):
 				if abs(local_input_data[key][i] - server_input_data[key][i]) > ClientData.EPSILON:
+					print(key, " - ",  local_input_data[key], " - ", server_input_data[key])
 					diff = true
 					source = key
 					break
@@ -186,9 +180,9 @@ func recieve_input(input : Dictionary, server_input_data : Dictionary):
 	else:
 		ClientData.prediction_errors += 1
 		# TODO: turn this back on or track it better?
-		print("Prediction error in input ", input_id, " (match ", input_queue_data["input_id"], ") for '" + source + "', Error rate ",
-			100 * ClientData.prediction_errors / float(ClientData.input_counter), "%, Total: ", ClientData.prediction_errors,
-			", Inputs in queue: ", len(ClientData.input_queue))
+#		print("Prediction error in input ", input_id, " (match ", input_queue_data["input_id"], ") for '" + source + "', Error rate ",
+#			100 * ClientData.prediction_errors / float(ClientData.input_counter), "%, Total: ", ClientData.prediction_errors,
+#			", Inputs in queue: ", len(ClientData.input_queue))
 		get_node("../Player").transform = Utility.transform_from_array(server_input_data["transform"])
 		get_node("../Player").velocity = Utility.vec3_from_array(server_input_data["velocity"])
 		get_node("../Player").head_angle = server_input_data["head_angle"]

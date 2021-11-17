@@ -14,7 +14,7 @@ var total_mouse_motion : Vector2 = Vector2(0, 0)	# aggregate mouse movement betw
 # How long to keep extrapolating player movements after not receiving data anymore
 #var max_extrapolation_time_ms : float = 500 # 500ms
 
-const EPSILON = 1e-3
+const EPSILON = 1
 
 var connected = false
 
