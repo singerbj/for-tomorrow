@@ -29,7 +29,7 @@ var player_last_shots = {}
 func fire_shot(pid, player):
 	var now = OS.get_system_time_msecs()
 	#TODO: this all has to depend on the gun, not a random timeout
-	if !(pid in player_last_shots) || (now - 300) > player_last_shots[pid]:
+	if true: #!(pid in player_last_shots) || (now - 300) > player_last_shots[pid]:
 		player_last_shots[pid] = now
 		var from = player.get_camera().project_ray_origin(Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2))
 		var to = from + player.get_camera().project_ray_normal(Vector2(get_viewport().size.x / 2, get_viewport().size.y / 2)) * ray_length
@@ -41,7 +41,7 @@ func fire_shot(pid, player):
 		var hit_player = false
 		var continue_casting = true
 		while(continue_casting):		
-			var result = space_state.intersect_ray(from, to, [self] + all_colliders)
+			var result = space_state.intersect_ray(from, to, [player] + all_colliders)
 			if 'collider_id' in result:
 				all_results.append(result)
 				all_colliders.append(result.collider)
@@ -57,6 +57,7 @@ func fire_shot(pid, player):
 				hit_player = true
 		
 		shots.append({ 'from': from, 'to': to, 'color': color })
+		DrawLine3d.draw_line_3d(from, to, color)
 		
 		return hit_player
 		

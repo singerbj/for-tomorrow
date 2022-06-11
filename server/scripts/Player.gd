@@ -7,7 +7,7 @@ const ACC_GRAV = Vector3(0, -100, 0)
 const ACC_MAG_INPUT = 100
 const UP_DIR = Vector3(0, 1, 0)
 const SNAP = Vector3(0, -2, 0)
-const MAX_XZ_SPEED = 4
+const MAX_XZ_SPEED = 2
 const FRICTION_XZ = 10
 const FRICTION_Y = 1
 

@@ -1,7 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://shared/materials/grid.material" type="Material" id=1]
 [ext_resource path="res://shared/scripts/Level2.gd" type="Script" id=2]
+[ext_resource path="res://shared/materials/teal.material" type="Material" id=3]
+[ext_resource path="res://shared/materials/red.material" type="Material" id=4]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 50, 0, 50 )
@@ -47,7 +49,7 @@ shape = SubResource( 3 )
 [node name="MeshInstance" type="MeshInstance" parent="Pillar"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
 mesh = SubResource( 4 )
-material/0 = ExtResource( 1 )
+material/0 = ExtResource( 3 )
 
 [node name="Pillar2" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 5 )
@@ -59,7 +61,7 @@ shape = SubResource( 3 )
 [node name="MeshInstance" type="MeshInstance" parent="Pillar2"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
 mesh = SubResource( 4 )
-material/0 = ExtResource( 1 )
+material/0 = ExtResource( 3 )
 
 [node name="Pillar3" type="StaticBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, -5 )
@@ -71,7 +73,7 @@ shape = SubResource( 3 )
 [node name="MeshInstance" type="MeshInstance" parent="Pillar3"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
 mesh = SubResource( 4 )
-material/0 = ExtResource( 1 )
+material/0 = ExtResource( 3 )
 
 [node name="StaticBody" type="StaticBody" parent="."]
 transform = Transform( 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0, 0, 1, -10, -1.25, 0 )
@@ -81,4 +83,9 @@ shape = SubResource( 5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
 mesh = SubResource( 6 )
-material/0 = ExtResource( 1 )
+material/0 = ExtResource( 4 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 50, 0 )
+fov = 90.0
+far = 8192.0

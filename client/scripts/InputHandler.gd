@@ -1,18 +1,6 @@
 extends Node
-
-var lines
-var time = 0
-
-func _ready() -> void:
-	lines = []
 	
-func _physics_process(delta):
-	time += delta;
-	if time > 0.25:
-		for line in lines:
-			line.queue_free()
-		lines = []
-		time = 0
+var idle_count = 0
 	
 func _input(event) -> void:
 	if event is InputEventMouseMotion && Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
@@ -47,6 +35,24 @@ func process_input(delta):
 	if Input.is_action_just_pressed("exit"):
 		button_list.append("exit")
 		get_tree().quit()
+	
+	if button_list.size() > 1:
+		idle_count = 0
+	else:
+		# bot mode
+		if idle_count > 500:
+			idle_count = 100
+		
+		idle_count += 1
+				
+#		if idle_count > 400:
+#			button_list = ["m_forward"]
+		if idle_count > 300:
+			button_list = ["m_left"]
+#		elif idle_count > 200:
+#			button_list = ["m_backward"]
+		elif idle_count > 100:
+			button_list = ["m_right"]
 		
 	var input = {"Buttons" : button_list, "delta" : delta, "Motion" : ClientData.total_mouse_motion}
 	ClientData.total_mouse_motion = Vector2(0, 0)
@@ -193,22 +199,8 @@ func recieve_input(input : Dictionary, server_input_data : Dictionary):
 	
 	
 # TODO: use the shot manager for this or something
-var ray_length = 1000
 func fire_shot(from, to, color):
-	var line = ImmediateGeometry.new()
-	var mat = SpatialMaterial.new()
-	mat.flags_unshaded = true
-	mat.vertex_color_use_as_albedo = true
-	line.material_override = mat
-	
-	get_node('/root').add_child(line)
-	line.clear()
-	line.begin(Mesh.PRIMITIVE_LINE_STRIP)
-	line.set_color(color)
-	line.add_vertex(from)
-	line.add_vertex(to)
-	line.end()
-	lines.append(line)
+	DrawLine3d.draw_line_3d(from, to, color)
 
 
 #func legacy_predict_client_input(input) -> Array:

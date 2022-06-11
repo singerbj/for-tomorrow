@@ -4,7 +4,7 @@ const ACC_GRAV = Vector3(0, -100, 0)
 const ACC_MAG_INPUT = 100
 const UP_DIR = Vector3(0, 1, 0)
 const SNAP = Vector3(0, -2, 0)
-const MAX_XZ_SPEED = 4
+const MAX_XZ_SPEED = 2
 const FRICTION_XZ = 10
 const FRICTION_Y = 1
 
@@ -25,8 +25,11 @@ func _ready() -> void:
 	
 	ads_tween = Tween.new()
 	add_child(ads_tween)
+	
 
 func _process(delta):
+	$Camera.current = true
+	
 	$CanvasLayer/Control/Label2.set_text(str(Engine.get_frames_per_second()))
 	
 func _physics_process(delta):
