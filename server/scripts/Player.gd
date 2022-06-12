@@ -6,6 +6,14 @@ var stashed_camera_transform = null
 var stashed_collision_transform = null
 
 var is_dummy = false
+# # Forces
+# const ACC_GRAV = Vector3(0, -100, 0)
+# const ACC_MAG_INPUT = 100
+# const UP_DIR = Vector3(0, 1, 0)
+# const SNAP = Vector3(0, -2, 0)
+# const MAX_XZ_SPEED = 2
+# const FRICTION_XZ = 10
+# const FRICTION_Y = 1
 
 #func _physics_process(delta):
 #	save_location()
@@ -23,39 +31,39 @@ func save_location():
 #
 #	print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
 
-#func stash_current_transform():
-#	self.stashed_transform = self.transform
-#	self.stashed_camera_transform = $Camera.transform
-#
-#func revert_to_stashed_transform():
-#	self.transform = self.stashed_transform
-#	$Camera.transform = self.stashed_camera_transform
-#	self.stashed_transform = null
-#	self.stashed_camera_transform = null
-#
-#func move_to_interpolated_location(timestamp : int, debug : bool):
-#	var result = get_interpolated_location(timestamp, debug)
-#	if debug:
-#		print("Before transform ", self.transform)
-#	self.transform = result[0]
-#	$Camera.transform = result[1]
-#	if debug:
-#		print("After transform ", self.transform)
-#
-#	LineDrawer.draw_line(self.transform.origin, Vector3(self.transform.origin.x, self.transform.origin.y + 4, self.transform.origin.z), Color(0.5, 0.8, 0), -1)
+func stash_current_transform():
+	self.stashed_transform = self.transform
+	self.stashed_camera_transform = $Camera.transform
+
+func revert_to_stashed_transform():
+	self.transform = self.stashed_transform
+	$Camera.transform = self.stashed_camera_transform
+	self.stashed_transform = null
+	self.stashed_camera_transform = null
+
+func move_to_interpolated_location(timestamp : int, debug : bool):
+	var result = get_interpolated_location(timestamp, debug)
+	if debug:
+		print("Before transform ", self.transform)
+	self.transform = result[0]
+	$Camera.transform = result[1]
+	if debug:
+		print("After transform ", self.transform)
+
+	DrawLine3d.draw_line_3d(self.transform.origin, Vector3(self.transform.origin.x, self.transform.origin.y + 10, self.transform.origin.z), Color(0, 1, 0), 5)
 
 func get_collision():
 	return $Collision
 
-func create_dummy_at_interpolated_location(Player, timestamp : int, debug : bool):
-	var dummy = Player.instance()
-	get_tree().get_root().add_child(dummy)
-	var result = get_interpolated_location(timestamp, debug)
-	dummy.transform = result[0]
-	dummy.get_camera().transform = result[1]
-	dummy.is_dummy = true
-	dummy.get_collision().disabled = true
-	return dummy
+#func create_dummy_at_interpolated_location(Player, timestamp : int, debug : bool):
+#	var dummy = Player.instance()
+#	get_tree().get_root().add_child(dummy)
+#	var result = get_interpolated_location(timestamp, debug)
+#	dummy.transform = result[0]
+#	dummy.get_camera().transform = result[1]
+#	dummy.is_dummy = true
+#	dummy.get_collision().disabled = true
+#	return dummy
 	
 
 func get_interpolated_location(timestamp : int, debug : bool):
@@ -72,9 +80,9 @@ func get_interpolated_location(timestamp : int, debug : bool):
 #	s += "]"
 #	print(s)
 
-	if debug:
-		for i in range(player_buffer.size()):
-			print(player_buffer[i]["timestamp"], " ___ ", player_buffer[i]["transform"])
+#	if debug:
+#		for i in range(player_buffer.size()):
+#			print(player_buffer[i]["timestamp"], " ___ ", player_buffer[i]["transform"])
 	
 	for i in range(player_buffer.size()):
 		if timestamp >= player_buffer[i]["timestamp"]:
@@ -96,22 +104,23 @@ func get_interpolated_location(timestamp : int, debug : bool):
 		
 	if before_time == null && after_time == null:
 		print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PROBLEM 1")
-		return null
+		return [self.transform, $Camera.transform]
 	elif before_time == null:
 		print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PROBLEM 2")
-		return self.transform
+		return [self.transform, $Camera.transform]
 	elif after_time == null:
 		print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ PROBLEM 3")
-		return self.transform
+		return [self.transform, $Camera.transform]
 	else:
-		var interpolated_timestamp : float
+		var interpolated_weight : float
+		var interpolated_timestamp : int
 		if after_time != before_time:
-			interpolated_timestamp = (timestamp - float(before_time)) / (float(after_time) - float(before_time))
+			interpolated_weight = (timestamp - float(before_time)) / (float(after_time) - float(before_time))
 		else:
-			interpolated_timestamp = after_time
+			interpolated_weight = 1
 			
-		var interpolated_transform = before["transform"].interpolate_with(after["transform"], interpolated_timestamp)
-		var interpolated_camera_transform = before["camera_transform"].interpolate_with(after["camera_transform"], interpolated_timestamp)
+		var interpolated_transform = before["transform"].interpolate_with(after["transform"], interpolated_weight)
+		var interpolated_camera_transform = before["camera_transform"].interpolate_with(after["camera_transform"], interpolated_weight)
 		
 		if debug:	
 			if before:

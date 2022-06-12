@@ -5,8 +5,8 @@ var Player = preload("res://scenes/Player.tscn")
 var Level = preload("res://shared/scenes/ArenaTest2.tscn")
 
 func _ready():
-	OS.set_current_screen(0)
-	OS.set_window_fullscreen(true)
+#	OS.set_current_screen(0)
+#	OS.set_window_fullscreen(true)
 	var level = Level.instance()
 	level.name = "Level"
 	add_child(level)
@@ -112,7 +112,6 @@ remote func _receive_message(msg, mode) -> void:
 
 func send_diagnostics(pid, diagnostics):
 	rpc_unreliable_id(pid, "report_diagnostics", diagnostics)
-
 
 func _send_message(msg : String, usr : String, chat_mode : String = "normal", color_msg = '#ffffff', color_usr = '#ffffff') -> void:
 	rpc_id(0, "_receive_server_message", msg, usr, chat_mode, color_msg, color_usr)

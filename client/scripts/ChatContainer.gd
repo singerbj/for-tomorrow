@@ -1,6 +1,6 @@
 extends Control
 
-const MAX_LINES = 10
+const MAX_lines = 10
 const COLOR_TEAM = '#AAAAFF'
 const COLOR_GLOBAL = '#FFFFAA'
 
@@ -77,7 +77,7 @@ func add_message(msg, usr, color_msg = '#ffffff', color_usr = '#ffffff') -> void
 	Log.bbcode_text += "[color=" + color_usr + "][" + usr + "]:[/color] "
 	Log.bbcode_text += "[color=" + color_msg + "]" + sanitizer.text + "[/color]"
 	# play sound
-	while Log.get_line_count() > MAX_LINES:
+	while Log.get_line_count() > MAX_lines:
 		Log.remove_line(0)
 
 func beep():

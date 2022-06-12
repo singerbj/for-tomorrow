@@ -1,5 +1,7 @@
 extends Node
-
+	
+var idle_count = 0
+	
 func _input(event) -> void:
 	if event is InputEventMouseMotion && Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
 		ClientData.total_mouse_motion += event.relative
@@ -9,7 +11,7 @@ func process_input(delta):
 	if !ClientData.chat.is_open:
 		if Input.is_action_pressed("m_forward"):
 			button_list.append("m_forward")
-		if !Input.is_action_pressed("aim") || Input.is_action_pressed("m_backward"):
+		if Input.is_action_pressed("m_backward"):
 			button_list.append("m_backward")
 		if Input.is_action_pressed("m_left"):
 			button_list.append("m_left")
@@ -32,7 +34,22 @@ func process_input(delta):
 		button_list.append("exit")
 		get_tree().quit()
 	
+#	if button_list.size() > 1:
+#		idle_count = 0
+#	else:
+#		# bot mode
+#		if idle_count > 500:
+#			idle_count = 100
+#
+#		idle_count += 1
+#
+#		if idle_count > 300:
+#			button_list = ["m_left"]
+#		elif idle_count > 100:
+#			button_list = ["m_right"]
+		
 	var input = { "Buttons" : button_list, "delta" : delta, "timestamp": ClientData.client_clock, "Motion" : ClientData.total_mouse_motion }
+	
 	ClientData.total_mouse_motion = Vector2(0, 0)
 	
 	var input_data = predict_input(input)
@@ -106,10 +123,10 @@ func push_to_input_queue(input : Dictionary, input_data) -> int:
 func recieve_shots(shots : Array, hit : bool, player_locations : Array):
 	#TODO move this to shot manager at some point
 	for shot in shots:
-		LineDrawer.draw_line(shot.from, shot.to, shot.color)
+		DrawLine3d.draw_line_3d(shot.from, shot.to, shot.color)
 	
 	for location in player_locations:
-		LineDrawer.draw_line(location, Vector3(location.x, location.y + 4, location.z), Color(0, 1, 0))
+		DrawLine3d.draw_line_3d(location, Vector3(location.x, location.y + 4, location.z), Color(0, 1, 0))
 		
 	#TODO show hitmarker if player got a hit
 	var P = get_node("../Player")
@@ -186,6 +203,10 @@ func recieve_input(input : Dictionary, server_input_data : Dictionary):
 			var corrected_input_data = predict_input(ClientData.input_queue[i]["input"])
 			ClientData.input_queue[i]["input_data"] = corrected_input_data
 
+#
+## TODO: use the shot manager for this or something
+#func fire_shot(from, to, color):
+#	DrawLine3d.draw_line_3d(from, to, color)
 
 #func legacy_predict_client_input(input) -> Array:
 #	# TODO: Abstract this

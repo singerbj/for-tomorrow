@@ -24,7 +24,7 @@ ServerData="*res://scripts/ServerData.gd"
 Utility="*res://scripts/Utility.gd"
 ShotManager="*res://scripts/ShotManager.gd"
 SharedData="*res://shared/scripts/SharedData.gd"
-LineDrawer="*res://shared/scripts/LineDrawer.gd"
+DrawLine3d="*res://shared/scripts/DrawLine3d.gd"
 
 [debug]
 

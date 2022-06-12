@@ -5,7 +5,7 @@ var is_player = true;
 enum State { IDLEING, WALKING, SPRNTING, JUMPING, FALLING }
 
 const ACCELERATION : float = 1.0
-const MOVE_SPEED : float = 10.0
+const MOVE_SPEED : float = 6.0
 #const SPRINT_SPEED : float = 14.0
 const MOVE_FRICTION : float = 1.25
 const MAX_CLIMB_ANGLE : float = 0.6
@@ -40,6 +40,7 @@ var weapon_list := ["gun"]
 #	raycast_node.cast_to(Vector3(0, -0.1, 0))
 #	raycast_node.enabled = true
 #	print("********************************************RayCastPos: ", raycast_node.transform.origin)
+#	$Camera.make_current()
 
 var input_dir : Vector3
 var jump : bool

@@ -10,7 +10,6 @@ func _ready() -> void:
 	ads_tween = Tween.new()
 	add_child(ads_tween)
 
-
 func _process(delta):
 	$Camera.make_current()
 	$CanvasLayer/Control/Label2.set_text(str(Engine.get_frames_per_second()))
